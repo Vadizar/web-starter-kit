@@ -1,22 +1,23 @@
 var
 	gulp = require('gulp'),
 	watch = require('gulp-watch'),
-	sequence = require('gulp-sequence'),
-	stylus = require('gulp-stylus'),
-	uncss = require('gulp-uncss'),
-	csso = require('gulp-csso'),
-	cssnano = require('gulp-cssnano'),
-	cmq = require('gulp-combine-mq'),
-	autoprefixer = require('gulp-autoprefixer'),
-	concat = require('gulp-concat'),
-	uglify = require('gulp-uglify'),
-	imagemin = require('gulp-imagemin'),
-	imageminJR = require('imagemin-jpeg-recompress'),
-	jpegtran = require('imagemin-jpegtran'),
-	svgmin = require('gulp-svgmin'),
-	favicons = require("gulp-real-favicon"),
-	livereload = require('gulp-livereload'),
-	openurl = require('openurl'),
+	sequence = require('run-sequence'),
+	pug = require('gulp-pug'),
+   stylus = require('gulp-stylus'),
+   csso = require('gulp-csso'),
+   cmq = require('gulp-combine-mq'),
+   gs = require('gulp-selectors'),
+   autoprefixer = require('gulp-autoprefixer'),
+   concat = require('gulp-concat'),
+   uglify = require('gulp-uglify'),
+   imagemin = require('gulp-imagemin'),
+   imageminJR = require('imagemin-jpeg-recompress'),
+   webp = require('gulp-webp'),
+   favicons = require("gulp-real-favicon"),
+   livereload = require('gulp-livereload'),
+   iconfont = require('gulp-iconfont'),
+   iconfontCss = require('gulp-iconfont-css'),
+   openurl = require('openurl'),
 	del = require('del'),
 	nib = require('nib'),
 	connect = require('connect'),
@@ -26,53 +27,44 @@ var
 /*
  * Создаём задачи
  *
- * jade – для HTML-препроцессора Jade
+ * pug – для HTML-препроцессора Pug
  * stylus – для CSS-препроцессора Stylus
- * coffee – для JavaScript-препроцессора CoffeеScript
  * concat – для склейки всех CSS и JS в отдельные файлы
  */
 
-gulp.task('stylus', function() {
-	gulp.src('./styl/style.styl')
+gulp.task('views', function() {
+	gulp.src('./views/*.pug')
+		.pipe(pug())
+		.pipe(gulp.dest('./public/'))
+		.pipe(livereload())
+});
+
+gulp.task('css', function() {
+	gulp.src('./styl/*.styl')
 		.pipe(stylus({
 			use: nib()
 		}))
-		.pipe(uncss({
-			html: ['http://localhost:3000']
-		}))
 		.pipe(cmq())
 		.pipe(csso())
-		.pipe(cssnano())
 		.pipe(autoprefixer('last 3 versions'))
-		//.pipe(gs.run())
 		.pipe(gulp.dest('./public/css/'))
 		.pipe(livereload())
 });
 
-gulp.task('404', function() {
-	gulp.src('./styl/404.styl')
-		.pipe(stylus({
-			use: nib()
-		}))
-		.pipe(cmq())
-		.pipe(csso())
-		.pipe(cssnano())
-		.pipe(autoprefixer('last 3 versions'))
-		.pipe(gulp.dest('./public/css/'))
-		.pipe(livereload())
+gulp.task('gs', function() {
+	var ignores = {
+		classes: ['active', 'menu', 'nav', 'slide', 'error', 'form-control', 'loader', 'showLoader', 'fadeLoader', 'webp', 'wow', 'owl-*', 'i-*'],
+		ids: '*'
+	};
+	gulp.src(['./public/**/*.css', './public/**/*.html'])
+		.pipe(gs.run({}, ignores))
+		.pipe(gulp.dest('./public/'))
 });
 
 gulp.task('js', function(){
 	gulp.src([
 			'./js/jquery.js',
-			'./js/wow.js',
-			'./js/menu.js',
-			'./js/scrollspy.js',
-			'./js/main.js',
-			'./js/temp/contact.bundled.js',
-			'./js/owl.carousel.js',
-			'./js/metrika.js',
-			'./js/metrika-initial.js'
+			'./js/main.js'
 		])
 		.pipe(concat('script.js'))
 		.pipe(uglify())
@@ -80,34 +72,34 @@ gulp.task('js', function(){
 		.pipe(livereload())
 });
 
-gulp.task('ie', function(){
-	gulp.src('./js/ie.js')
-		.pipe(uglify())
-		.pipe(gulp.dest('./public/js/'))
-		.pipe(livereload())
+gulp.task('js-embded', function(){
+   gulp.src('./js/embded/**/*')
+      .pipe(uglify())
+      .pipe(gulp.dest('./public/js/'))
+      .pipe(livereload())
 });
 
 gulp.task('imagemin', function() {
-	gulp.src(['./img/*', './img/*/*'])
-		.pipe(imagemin({
-			progressive: true,
-			use: [
-				imageminJR({method: 'ms-ssim'}),
-				jpegtran()
-			]
-		}))
-		.pipe(gulp.dest('./public/img/'))
+   gulp.src('./img/**/*')
+      .pipe(imagemin({
+         use: [
+            imageminJR({
+               method: 'ms-ssim'
+            })
+         ]
+      }))
+      .pipe(gulp.dest('./public/img/'))
 });
 
-gulp.task('svgmin', function () {
-	gulp.src('./svg/*')
-		.pipe(svgmin())
-		.pipe(gulp.dest('./public/svg/'))
+gulp.task('webp', function() {
+   gulp.src('./img/**/*')
+      .pipe(webp())
+      .pipe(gulp.dest('./public/img/'))
 });
 
 gulp.task('favicons', function () {
 	favicons.generateFavicon({
-		masterPicture: './img/favicons/1000tech.png',
+		masterPicture: './img/favicons/favicon.png',
 		dest: './public/img/favicons/',
 		design: {
 			desktopBrowser: {},
@@ -140,18 +132,39 @@ gulp.task('favicons', function () {
 	});
 });
 
+gulp.task('iconfont', function() {
+   var
+      fontName = 'icon-font',
+      cssClass = 'i';
+   gulp.src(['./fonts/icon-font/*.svg'])
+      .pipe(iconfontCss({
+         fontName: fontName,
+         cssClass: cssClass,
+         path: './styl/mixins/icon-font.styl',
+         targetPath: '../../styl/sub/icon-font.styl',
+         fontPath: '../fonts/'
+      }))
+      .pipe(iconfont({
+         fontName: fontName,
+         prependUnicode: true,
+         normalize: true,
+         formats: ['svg','ttf','woff','woff2']
+      }))
+      .pipe(gulp.dest('./public/fonts/'));
+});
+
 gulp.task('fonts', function() {
-	gulp.src('./fonts/*')
-		.pipe(gulp.dest('./public/fonts/'))
+   gulp.src('./fonts/text-font/*')
+      .pipe(gulp.dest('./public/fonts/'))
 });
 
 gulp.task('seo', function() {
-	gulp.src('./seo/*')
-		.pipe(gulp.dest('./public/'))
+   gulp.src('./seo/*')
+      .pipe(gulp.dest('./public/'))
 });
 
 gulp.task('clean', function() {
-	del('./public/')
+   del('./public/')
 });
 
 /*
@@ -161,29 +174,29 @@ gulp.task('server', function() {
 	connect()
 		.use(require('connect-livereload')())
 		.use(serveStatic(__dirname + '/public'))
-		.listen('4000');
+		.listen('5000');
 });
 
 gulp.task('open', function () {
-	openurl.open('http://localhost:4000')
+	openurl.open('http://localhost:5000')
 });
 
 /*
  * Создадим задачу, смотрящую за изменениями
  */
 gulp.task('watch', function() {
-	watch('./styl/**/*.styl', function() { gulp.start('stylus') });
-	watch('./styl/404.styl', function() { gulp.start('404') });
-	watch('./js/**/*.js', function() { gulp.start('js') });
-	watch('./js/ie.js', function() { gulp.start('ie') });
-	watch('./img/**/*', function() { gulp.start('imagemin') });
-	watch('./svg/*', function() { gulp.start('svgmin') });
-	watch('./seo/**/*.*', function() { gulp.start('seo') });
+   watch('./pug/**/*', function() { gulp.start('views') });
+   watch('./styl/**/*', function() { gulp.start(['css', 'views']) });
+   watch('./js/**/*', function() { gulp.start(['js', 'js-embded']) });
+   watch('./img/**/*', function() { gulp.start(['imagemin', 'webp']) });
+   watch('./fonts/**/*', function() { gulp.start(['iconfont', 'fonts']) });
+   watch('./seo/**/*', function() { gulp.start('seo') });
 });
 
-gulp.task('default', sequence(
-	'server',
-	'stylus',
-	['404','js','ie','imagemin','svgmin','fonts','seo'],
-	'watch','open'
-));
+gulp.task('default', function(cb) {
+   sequence(
+      'server','watch','views','css','js','js-embded',
+      'imagemin','webp','iconfont','fonts','seo',
+      'open',
+      cb);
+});
