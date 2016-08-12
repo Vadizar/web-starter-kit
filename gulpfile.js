@@ -23,15 +23,7 @@ var
 	connect = require('connect'),
 	serveStatic = require('serve-static');
 
-
-/*
- * Создаём задачи
- *
- * pug – для HTML-препроцессора Pug
- * stylus – для CSS-препроцессора Stylus
- * concat – для склейки всех CSS и JS в отдельные файлы
- */
-
+// Compiling Pug in HTML
 gulp.task('views', function() {
 	gulp.src('./views/*.pug')
 		.pipe(pug())
@@ -39,6 +31,7 @@ gulp.task('views', function() {
 		.pipe(livereload())
 });
 
+// Compiling Stylus in CSS
 gulp.task('css', function() {
 	gulp.src('./styl/*.styl')
 		.pipe(stylus({
@@ -51,6 +44,7 @@ gulp.task('css', function() {
 		.pipe(livereload())
 });
 
+// Minify selectors
 gulp.task('gs', function() {
 	var ignores = {
 		classes: ['active', 'menu', 'nav', 'slide', 'error', 'form-control', 'loader', 'showLoader', 'fadeLoader', 'webp', 'wow', 'owl-*', 'i-*'],
@@ -61,6 +55,7 @@ gulp.task('gs', function() {
 		.pipe(gulp.dest('./public/'))
 });
 
+// Concat JS
 gulp.task('js', function(){
 	gulp.src([
 			'./js/jquery.js',
@@ -72,6 +67,7 @@ gulp.task('js', function(){
 		.pipe(livereload())
 });
 
+// Replace embded JS
 gulp.task('js-embded', function(){
    gulp.src('./js/embded/**/*')
       .pipe(uglify())
@@ -79,6 +75,7 @@ gulp.task('js-embded', function(){
       .pipe(livereload())
 });
 
+// Optimizing images
 gulp.task('imagemin', function() {
    gulp.src('./img/**/*')
       .pipe(imagemin({
@@ -91,12 +88,14 @@ gulp.task('imagemin', function() {
       .pipe(gulp.dest('./public/img/'))
 });
 
+// Creation Webp
 gulp.task('webp', function() {
    gulp.src('./img/**/*')
       .pipe(webp())
       .pipe(gulp.dest('./public/img/'))
 });
 
+// Creation favicons
 gulp.task('favicons', function () {
 	favicons.generateFavicon({
 		masterPicture: './img/favicons/favicon.png',
@@ -132,6 +131,7 @@ gulp.task('favicons', function () {
 	});
 });
 
+// Creation icon font
 gulp.task('iconfont', function() {
    var
       fontName = 'icon-font',
@@ -153,23 +153,24 @@ gulp.task('iconfont', function() {
       .pipe(gulp.dest('./public/fonts/'));
 });
 
+// Replace fonts
 gulp.task('fonts', function() {
    gulp.src('./fonts/text-font/*')
       .pipe(gulp.dest('./public/fonts/'))
 });
 
+// Replace seo rule
 gulp.task('seo', function() {
    gulp.src('./seo/*')
       .pipe(gulp.dest('./public/'))
 });
 
+// Task for clean public
 gulp.task('clean', function() {
    del('./public/')
 });
 
-/*
- * Создадим веб-сервер, чтобы работать с проектом через браузер
- */
+// Creation web-server
 gulp.task('server', function() {
 	connect()
 		.use(require('connect-livereload')())
@@ -181,9 +182,7 @@ gulp.task('open', function () {
 	openurl.open('http://localhost:5000')
 });
 
-/*
- * Создадим задачу, смотрящую за изменениями
- */
+// Watcher
 gulp.task('watch', function() {
    watch('./pug/**/*', function() { gulp.start('views') });
    watch('./styl/**/*', function() { gulp.start(['css', 'views']) });
