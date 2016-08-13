@@ -88,14 +88,14 @@ gulp.task('imagemin', function() {
       .pipe(gulp.dest('./public/img/'))
 });
 
-// Creation Webp
+// Generate Webp
 gulp.task('webp', function() {
    gulp.src('./img/**/*')
       .pipe(webp())
       .pipe(gulp.dest('./public/img/'))
 });
 
-// Creation favicons
+// Generate favicons
 gulp.task('favicons', function () {
 	favicons.generateFavicon({
 		masterPicture: './img/favicons/favicon.png',
@@ -116,7 +116,7 @@ gulp.task('favicons', function () {
 			ios: {
 				onConflict: 'override',
 				pictureAspect: 'backgroundAndMargin',
-				backgroundColor: '#f0f3f7',
+				backgroundColor: '#fff',
 				margin: '15%'
 			},
 			safariPinnedTab: {
@@ -131,7 +131,7 @@ gulp.task('favicons', function () {
 	});
 });
 
-// Creation icon font
+// Generate icon font
 gulp.task('iconfont', function() {
    var
       fontName = 'icon-font',
@@ -170,7 +170,7 @@ gulp.task('clean', function() {
    del('./public/')
 });
 
-// Creation web-server
+// Web-server
 gulp.task('server', function() {
 	connect()
 		.use(require('connect-livereload')())

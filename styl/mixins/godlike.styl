@@ -1,3 +1,5 @@
+@charset "UTF-8"
+
 *
     box-sizing border-box
 
@@ -55,16 +57,14 @@ input[type='submit'], input[type='checkbox'], input[type='radio']
 button, input
     &[disabled]
         pointer-events none
-    // Remove the padding in FF
+    // Remove padding in FF
     &::-moz-focus-inner
         border 0
         padding 0
 
-// Remove the styling in WebKit
-input
-    -webkit-appearance none
-    &::-webkit-search-cancel-button, &::-webkit-search-decoration
-        -webkit-appearance: none;
+// Remove styling in WebKit
+input, input::-webkit-search-cancel-button, input::-webkit-search-decoration
+    -webkit-appearance: none;
 
 textarea
     overflow auto
@@ -94,15 +94,9 @@ td, th
     padding 0
     text-align center
 
-::-webkit-input-placeholder
-    color inherit
-
+// Fix placeholder color in FF
 :-moz-placeholder, ::-moz-placeholder
-    color inherit
     opacity 1
-
-:-ms-input-placeholder
-    color inherit
 
 @-ms-viewport
     width device-width

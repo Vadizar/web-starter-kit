@@ -105,7 +105,7 @@
     }
     var o, p, q, r, s, t, u, v, w, x, y, z, A, B = ["text", "search", "url", "tel", "email", "password", "number", "textarea"],
       C = [27, 33, 34, 35, 36, 37, 38, 39, 40, 8, 46],
-      D = "#111",
+      D = "#222",
       E = "placeholdersjs",
       F = new RegExp("(?:^|\\s)" + E + "(?!\\S)"),
       G = "data-placeholder-value",
