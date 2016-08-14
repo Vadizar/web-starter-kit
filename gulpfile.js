@@ -12,7 +12,8 @@ var
    uglify = require('gulp-uglify'),
    imagemin = require('gulp-imagemin'),
    imageminJR = require('imagemin-jpeg-recompress'),
-   webp = require('gulp-webp'),
+	imageminSvgo = require('imagemin-svgo'),
+	webp = require('gulp-webp'),
    favicons = require("gulp-real-favicon"),
    livereload = require('gulp-livereload'),
    iconfont = require('gulp-iconfont'),
@@ -77,15 +78,18 @@ gulp.task('js-embded', function(){
 
 // Optimizing images
 gulp.task('imagemin', function() {
-   gulp.src('./img/**/*')
-      .pipe(imagemin({
-         use: [
-            imageminJR({
-               method: 'ms-ssim'
-            })
-         ]
-      }))
-      .pipe(gulp.dest('./public/img/'))
+	gulp.src('./img/**/*')
+		.pipe(imagemin([
+			imageminJR({
+				method: 'ms-ssim'
+			}),
+			imageminSvgo({
+				plugins: [
+					{removeViewBox: false}
+				]
+			})
+		]))
+		.pipe(gulp.dest('./public/img/'))
 });
 
 // Generate Webp
@@ -99,7 +103,6 @@ gulp.task('webp', function() {
 gulp.task('favicons', function () {
 	favicons.generateFavicon({
 		masterPicture: './img/favicons/favicon.png',
-		dest: './public/img/favicons/',
 		design: {
 			desktopBrowser: {},
 			androidChrome: {
@@ -127,7 +130,9 @@ gulp.task('favicons', function () {
 		settings: {
 			scalingAlgorithm: 'Mitchell',
 			errorOnImageTooSmall: false
-		}
+		},
+		markupFile: 'public/img/favicons/package.json',
+		dest: './public/img/favicons/'
 	});
 });
 
@@ -184,11 +189,12 @@ gulp.task('open', function () {
 
 // Watcher
 gulp.task('watch', function() {
-   watch('./pug/**/*', function() { gulp.start('views') });
+   watch('./views/**/*', function() { gulp.start('views') });
    watch('./styl/**/*', function() { gulp.start(['css', 'views']) });
    watch('./js/**/*', function() { gulp.start(['js', 'js-embded']) });
    watch('./img/**/*', function() { gulp.start(['imagemin', 'webp']) });
-   watch('./fonts/**/*', function() { gulp.start(['iconfont', 'fonts']) });
+	watch('./img/favicons/**/*', function() { gulp.start('favicons') });
+	watch('./fonts/**/*', function() { gulp.start(['iconfont', 'fonts']) });
    watch('./seo/**/*', function() { gulp.start('seo') });
 });
 
