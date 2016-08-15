@@ -1,28 +1,25 @@
-@font-face {
-    font-family: "<%= fontName %>";
+@font-face
+    font-family "<%= fontName %>"
     src: url('<%= fontPath %><%= fontName %>.woff2') format('woff2'),
          url('<%= fontPath %><%= fontName %>.woff') format('woff'),
          url('<%= fontPath %><%= fontName %>.ttf') format('truetype'),
-         url('<%= fontPath %><%= fontName %>.svg#<%= fontName %>') format('svg');
-}
+         url('<%= fontPath %><%= fontName %>.svg#<%= fontName %>') format('svg')
 
-i {
-    &:before{
-        display: inline-block;
-        font: 14px/1 '<%= fontName %>';
-        font-size: inherit;
-        text-rendering: auto;
-        vertical-align: middle;
+i
+    vertical-align middle
+    &:before
+        display inline-block
+        font 14px/1 'icon-font'
+        font-size inherit
+        text-rendering auto
+        vertical-align middle
 
         /* For safety - reset parent styles, that can break glyph codes*/
-        font-variant: normal;
-        text-transform: none;
-        speak: none;
-    }
-}
+        font-variant normal
+        text-transform none
+        speak none
 
 <% _.each(glyphs, function(glyph) { %>
-.<%= cssClass %>-<%= glyph.fileName %>:before {
-  content: "\<%= glyph.codePoint %>";
-}
+.<%= cssClass %>-<%= glyph.fileName %>:before
+  content "\<%= glyph.codePoint %>"
 <% }); %>
