@@ -189,7 +189,8 @@ gulp.task('open', function () {
 
 // Watcher
 gulp.task('watch', function() {
-   watch('./views/**/*', function() { gulp.start('views') });
+	livereload.listen();
+	watch('./views/**/*', function() { gulp.start('views') });
    watch('./styl/**/*', function() { gulp.start(['css', 'views']) });
    watch('./js/**/*', function() { gulp.start(['js', 'js-embded']) });
    watch('./img/**/*', function() { gulp.start(['imagemin', 'webp']) });
