@@ -6,18 +6,19 @@
          url('../fonts/icon-font.svg#icon-font') format('svg')
 
 i
-    vertical-align middle
+    position relative
+    display inline-block
+    width 1em
+    height 1em
     &:before
-        display inline-block
-        font 14px/1 'icon-font'
+        font 14px 'icon-font'
         font-size inherit
         text-rendering auto
-        vertical-align middle
-
-        /* For safety - reset parent styles, that can break glyph codes*/
+        speak none
         font-variant normal
         text-transform none
-        speak none
+        color inherit
+        align-center-middle()
 
 
 .i-cancel:before
