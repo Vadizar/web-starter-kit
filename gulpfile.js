@@ -153,7 +153,7 @@ gulp.task('iconfont', function() {
             fontName: fontName,
             prependUnicode: true,
             normalize: true,
-            formats: ['svg','ttf','woff','woff2']
+            formats: ['ttf','woff','woff2']
         }))
         .pipe(gulp.dest('./public/fonts/'));
 });
