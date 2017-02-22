@@ -13,14 +13,24 @@ bower i
 
 ## Usage
 
-###Run development tasks:
+###Run tasks:
 ```smartyconfig
 gulp
 ```
 
-###Build production files:
+###Run development tasks with sourcemaps:
 ```smartyconfig
-gulp build
+gulp dev
+```
+
+###Run selectors minify:
+```smartyconfig
+gulp gs
+```
+
+###Run favicons generate:
+```smartyconfig
+gulp favicons
 ```
 
 ###Delete build files:
