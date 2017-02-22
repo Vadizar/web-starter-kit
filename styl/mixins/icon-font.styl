@@ -17,7 +17,10 @@
         font-variant normal
         text-transform none
         color inherit
-        align-center-middle()
+        position absolute
+        top 50%
+        left 50%
+        transform translate(-50%, -50%)
 
 <% _.each(glyphs, function(glyph) { %>
 .<%= cssClass %>-<%= glyph.fileName %>:before

@@ -1,0 +1,45 @@
+@font-face
+    font-family "icon-font"
+    src: url('../fonts/icon-font.woff2') format('woff2'),
+         url('../fonts/icon-font.woff') format('woff'),
+         url('../fonts/icon-font.ttf') format('truetype')
+
+[class*="i-"]
+    position relative
+    display inline-block
+    width 1em
+    height 1em
+    &:before
+        font 14px 'icon-font'
+        font-size inherit
+        text-rendering auto
+        speak none
+        font-variant normal
+        text-transform none
+        color inherit
+        position absolute
+        top 50%
+        left 50%
+        transform translate(-50%, -50%)
+
+
+.i-cancel:before
+  content "\E001"
+
+.i-fb:before
+  content "\E002"
+
+.i-menu:before
+  content "\E003"
+
+.i-rss:before
+  content "\E004"
+
+.i-search:before
+  content "\E005"
+
+.i-tw:before
+  content "\E006"
+
+.i-vk:before
+  content "\E007"

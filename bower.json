@@ -1,0 +1,15 @@
+{
+  "name": "1000.tech",
+  "description": "We've got the special power — we make future",
+  "authors": [
+    "1000.tech <info@1000.tech>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/1000tech/1000.tech"
+  },
+  "license": "WTFPL",
+  "dependencies": {
+    "godlike.css": "^3.4.6"
+  }
+}

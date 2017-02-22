@@ -1,6 +1,7 @@
 .idea/
 .DS_Store
-node_modules
 npm-debug.log
+node_modules
+bower_components
 styl/components/icon-font.styl
 public

@@ -5,9 +5,10 @@ var
     pug = require('gulp-pug'),
     stylus = require('gulp-stylus'),
     csso = require('gulp-csso'),
-    cmq = require('gulp-combine-mq'),
+    cmq = require('gulp-group-css-media-queries'),
     gs = require('gulp-selectors'),
     autoprefixer = require('gulp-autoprefixer'),
+    sourcemaps = require('gulp-sourcemaps'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
     imagemin = require('gulp-imagemin'),
@@ -32,6 +33,19 @@ gulp.task('views', function() {
         .pipe(livereload())
 });
 
+// Compiling Stylus in CSS | Develop
+gulp.task('css-dev', function() {
+    gulp.src('./styl/*.styl')
+        .pipe(sourcemaps.init())
+        .pipe(stylus({
+            use: nib()
+        }))
+        .pipe(autoprefixer('last 3 versions'))
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest('./public/css/'))
+        .pipe(livereload())
+});
+
 // Compiling Stylus in CSS
 gulp.task('css', function() {
     gulp.src('./styl/*.styl')
@@ -42,13 +56,12 @@ gulp.task('css', function() {
         .pipe(csso())
         .pipe(autoprefixer('last 3 versions'))
         .pipe(gulp.dest('./public/css/'))
-        .pipe(livereload())
 });
 
 // Minify selectors
 gulp.task('gs', function() {
     var ignores = {
-        classes: ['active', 'menu', 'nav', 'slide', 'error', 'form-control', 'loader', 'showLoader', 'fadeLoader', 'webp', 'wow', 'owl-*', 'i-*'],
+        classes: ['active', 'webp', 'i-*'],
         ids: '*'
     };
     gulp.src(['./public/**/*.css', './public/**/*.html'])
@@ -56,7 +69,20 @@ gulp.task('gs', function() {
         .pipe(gulp.dest('./public/'))
 });
 
-// Concat JS
+// Compiling JS | Develop
+gulp.task('js-dev', function(){
+    gulp.src([
+        './js/jquery.js',
+        './js/main.js'
+    ])
+        .pipe(sourcemaps.init())
+        .pipe(concat('script.js'))
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest('./public/js/'))
+        .pipe(livereload())
+});
+
+// Compiling JS
 gulp.task('js', function(){
     gulp.src([
         './js/jquery.js',
@@ -65,7 +91,6 @@ gulp.task('js', function(){
         .pipe(concat('script.js'))
         .pipe(uglify())
         .pipe(gulp.dest('./public/js/'))
-        .pipe(livereload())
 });
 
 // Replace embded JS
@@ -146,7 +171,7 @@ gulp.task('iconfont', function() {
             fontName: fontName,
             cssClass: cssClass,
             path: './styl/mixins/icon-font.styl',
-            targetPath: '../../styl/sub/icon-font.styl',
+            targetPath: '../../styl/components/font/icon-font.styl',
             fontPath: '../fonts/'
         }))
         .pipe(iconfont({
@@ -197,6 +222,14 @@ gulp.task('watch', function() {
     watch('./img/favicons/**/*', function() { gulp.start('favicons') });
     watch('./fonts/**/*', function() { gulp.start(['iconfont', 'fonts']) });
     watch('./seo/**/*', function() { gulp.start('seo') });
+});
+
+gulp.task('dev', function(cb) {
+    sequence(
+        'server','views','css-dev','js-dev','js-embded',
+        'imagemin','webp','iconfont','fonts','seo',
+        'open',
+        cb);
 });
 
 gulp.task('default', function(cb) {

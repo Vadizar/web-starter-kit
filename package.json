@@ -1,6 +1,5 @@
 {
   "name": "1000.tech",
-  "version": "1.0.0",
   "description": "We've got the special power — we make future",
   "author": "1000.tech <info@1000.tech>",
   "repository": {
@@ -14,10 +13,10 @@
     "del": "^2.2.2",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
-    "gulp-combine-mq": "^0.4.0",
     "gulp-concat": "^2.6.0",
     "gulp-csso": "^2.0.0",
     "gulp-favicons": "^2.2.6",
+    "gulp-group-css-media-queries": "^1.2.0",
     "gulp-iconfont": "^8.0.1",
     "gulp-iconfont-css": "^2.1.0",
     "gulp-imagemin": "^3.0.3",
@@ -25,6 +24,7 @@
     "gulp-pug": "^3.0.4",
     "gulp-real-favicon": "^0.2.1",
     "gulp-selectors": "^0.1.9",
+    "gulp-sourcemaps": "^2.4.1",
     "gulp-sequence": "^0.4.5",
     "gulp-stylus": "^2.5.0",
     "gulp-uglify": "^2.0.0",
