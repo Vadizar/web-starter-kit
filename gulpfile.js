@@ -1,61 +1,67 @@
 var
     gulp = require('gulp'),
+    $ = require('gulp-load-plugins')(),
     watch = require('gulp-watch'),
     sequence = require('run-sequence'),
-    pug = require('gulp-pug'),
-    stylus = require('gulp-stylus'),
-    csso = require('gulp-csso'),
     cmq = require('gulp-group-css-media-queries'),
     gs = require('gulp-selectors'),
-    autoprefixer = require('gulp-autoprefixer'),
     sourcemaps = require('gulp-sourcemaps'),
-    concat = require('gulp-concat'),
-    uglify = require('gulp-uglify'),
-    imagemin = require('gulp-imagemin'),
     imageminJR = require('imagemin-jpeg-recompress'),
     imageminSvgo = require('imagemin-svgo'),
-    webp = require('gulp-webp'),
     favicons = require("gulp-real-favicon"),
-    livereload = require('gulp-livereload'),
-    iconfont = require('gulp-iconfont'),
-    iconfontCss = require('gulp-iconfont-css'),
     openurl = require('openurl'),
     del = require('del'),
     nib = require('nib'),
     connect = require('connect'),
     serveStatic = require('serve-static');
 
+
 // Compiling Pug in HTML
 gulp.task('views', function() {
     gulp.src('./views/*.pug')
-        .pipe(pug())
+        .pipe($.newer('./public/'))
+        .pipe($.pug())
         .pipe(gulp.dest('./public/'))
-        .pipe(livereload())
+        .pipe($.livereload())
 });
 
-// Compiling Stylus in CSS | Develop
-gulp.task('css-dev', function() {
-    gulp.src('./styl/*.styl')
-        .pipe(sourcemaps.init())
-        .pipe(stylus({
-            use: nib()
+// Compiling Pug in HTML | Develop
+gulp.task('views-dev', function() {
+    gulp.src('./views/*.pug')
+        .pipe($.newer('./public/'))
+        .pipe($.pug({
+            pretty: true
         }))
-        .pipe(autoprefixer('last 3 versions'))
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest('./public/css/'))
-        .pipe(livereload())
+        .pipe(gulp.dest('./public/'))
+        .pipe($.livereload())
 });
 
 // Compiling Stylus in CSS
 gulp.task('css', function() {
     gulp.src('./styl/*.styl')
-        .pipe(stylus({
+        .pipe($.newer('./public/css/'))
+        .pipe($.stylus({
             use: nib()
         }))
         .pipe(cmq())
-        .pipe(csso())
-        .pipe(autoprefixer('last 3 versions'))
+        .pipe($.csso())
+        .pipe($.autoprefixer('last 3 versions'))
         .pipe(gulp.dest('./public/css/'))
+        .pipe($.livereload())
+});
+
+// Compiling Stylus in CSS | Develop
+gulp.task('css-dev', function() {
+    gulp.src('./styl/*.styl')
+        .pipe($.newer('./public/css/'))
+        .pipe(sourcemaps.init())
+        .pipe($.stylus({
+            use: nib()
+        }))
+        .pipe($.autoprefixer('last 3 versions'))
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest('./public/css/'))
+        .pipe($.livereload())
 });
 
 // Minify selectors
@@ -69,6 +75,18 @@ gulp.task('gs', function() {
         .pipe(gulp.dest('./public/'))
 });
 
+// Compiling JS
+gulp.task('js', function(){
+    gulp.src([
+        './js/jquery.js',
+        './js/main.js'
+    ])
+        .pipe($.concat('script.js'))
+        .pipe($.uglify())
+        .pipe(gulp.dest('./public/js/'))
+        .pipe($.livereload())
+});
+
 // Compiling JS | Develop
 gulp.task('js-dev', function(){
     gulp.src([
@@ -76,35 +94,36 @@ gulp.task('js-dev', function(){
         './js/main.js'
     ])
         .pipe(sourcemaps.init())
-        .pipe(concat('script.js'))
+        .pipe($.concat('script.js'))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest('./public/js/'))
-        .pipe(livereload())
-});
-
-// Compiling JS
-gulp.task('js', function(){
-    gulp.src([
-        './js/jquery.js',
-        './js/main.js'
-    ])
-        .pipe(concat('script.js'))
-        .pipe(uglify())
-        .pipe(gulp.dest('./public/js/'))
+        .pipe($.livereload())
 });
 
 // Replace embded JS
 gulp.task('js-embded', function(){
     gulp.src('./js/embded/**/*')
-        .pipe(uglify())
+        .pipe($.newer('./public/js/'))
+        .pipe($.uglify())
         .pipe(gulp.dest('./public/js/'))
-        .pipe(livereload())
+        .pipe($.livereload())
+});
+
+// Replace embded JS | Develop
+gulp.task('js-embded-dev', function(){
+    gulp.src('./js/embded/**/*')
+        .pipe($.newer('./public/js/'))
+        .pipe(sourcemaps.init())
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest('./public/js/'))
+        .pipe($.livereload())
 });
 
 // Optimizing images
 gulp.task('imagemin', function() {
     gulp.src('./img/**/*')
-        .pipe(imagemin([
+        .pipe($.newer('./public/img/'))
+        .pipe($.imagemin([
             imageminJR({
                 method: 'ms-ssim'
             }),
@@ -120,7 +139,7 @@ gulp.task('imagemin', function() {
 // Generate Webp
 gulp.task('webp', function() {
     gulp.src('./img/**/*')
-        .pipe(webp())
+        .pipe($.webp())
         .pipe(gulp.dest('./public/img/'))
 });
 
@@ -167,31 +186,41 @@ gulp.task('iconfont', function() {
         fontName = 'icon-font',
         cssClass = 'i';
     gulp.src(['./fonts/icon-font/*.svg'])
-        .pipe(iconfontCss({
+        .pipe($.imagemin([
+            imageminSvgo({
+                plugins: [
+                    {removeViewBox: true}
+                ]
+            })
+        ]))
+        .pipe($.iconfontCss({
             fontName: fontName,
             cssClass: cssClass,
             path: './styl/mixins/icon-font.styl',
             targetPath: '../../styl/components/font/icon-font.styl',
             fontPath: '../fonts/'
         }))
-        .pipe(iconfont({
+        .pipe($.iconfont({
             fontName: fontName,
             prependUnicode: true,
             normalize: true,
             formats: ['ttf','woff','woff2']
         }))
-        .pipe(gulp.dest('./public/fonts/'));
+        .pipe(gulp.dest('./public/fonts/'))
+        .pipe($.livereload())
 });
 
 // Replace fonts
 gulp.task('fonts', function() {
     gulp.src('./fonts/text-font/*')
+        .pipe($.newer('./public/fonts/'))
         .pipe(gulp.dest('./public/fonts/'))
 });
 
 // Replace seo rule
 gulp.task('seo', function() {
     gulp.src('./seo/*')
+        .pipe($.newer('./public/'))
         .pipe(gulp.dest('./public/'))
 });
 
@@ -202,6 +231,7 @@ gulp.task('clean', function() {
 
 // Web-server
 gulp.task('server', function() {
+    $.livereload.listen();
     connect()
         .use(require('connect-livereload')())
         .use(serveStatic(__dirname + '/public'))
@@ -214,9 +244,8 @@ gulp.task('open', function () {
 
 // Watcher
 gulp.task('watch', function() {
-    livereload.listen();
     watch('./views/**/*', function() { gulp.start('views') });
-    watch('./styl/**/*', function() { gulp.start(['css', 'views']) });
+    watch('./styl/**/*', function() { gulp.start('css') });
     watch('./js/**/*', function() { gulp.start(['js', 'js-embded']) });
     watch('./img/**/*', function() { gulp.start(['imagemin', 'webp']) });
     watch('./img/favicons/**/*', function() { gulp.start('favicons') });
@@ -224,18 +253,20 @@ gulp.task('watch', function() {
     watch('./seo/**/*', function() { gulp.start('seo') });
 });
 
-gulp.task('dev', function(cb) {
-    sequence(
-        'server','views','css-dev','js-dev','js-embded',
-        'imagemin','webp','iconfont','fonts','seo',
-        'open',
+// Compiling
+gulp.task('default', function(cb) {
+    return sequence(
+        'css','js','js-embded',
+        'imagemin','webp','favicons','iconfont','fonts','views',
+        'server','watch','open','seo',
         cb);
 });
 
-gulp.task('default', function(cb) {
-    sequence(
-        'server','watch','views','css','js','js-embded',
-        'imagemin','webp','iconfont','fonts','seo',
-        'open',
+// Compiling | Develop
+gulp.task('dev', function(cb) {
+    return sequence(
+        'css-dev','js-dev','js-embded-dev',
+        'imagemin','webp','favicons','iconfont','fonts','views-dev',
+        'server','watch','open','seo',
         cb);
 });

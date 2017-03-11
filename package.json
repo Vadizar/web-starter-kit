@@ -21,13 +21,15 @@
     "gulp-iconfont-css": "^2.1.0",
     "gulp-imagemin": "^3.0.3",
     "gulp-livereload": "^3.8.1",
-    "gulp-pug": "^3.0.4",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-newer": "^1.3.0",
+    "gulp-pug": "^3.3.0",
     "gulp-real-favicon": "^0.2.1",
     "gulp-selectors": "^0.1.9",
     "gulp-sourcemaps": "^2.4.1",
     "gulp-sequence": "^0.4.5",
     "gulp-stylus": "^2.5.0",
-    "gulp-uglify": "^2.0.0",
+    "gulp-uglify": "^2.1.0",
     "gulp-watch": "^4.3.9",
     "gulp-webp": "^2.3.0",
     "imagemin-jpeg-recompress": "^5.1.0",
@@ -35,6 +37,6 @@
     "nib": "^1.1.0",
     "openurl": "^1.1.1",
     "run-sequence": "^1.2.2",
-    "serve-static": "^1.10.2"
+    "serve-static": "^1.12.1"
   }
 }

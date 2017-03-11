@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>http://1000.tech/en</loc>
+        <changefreq>monthly</changefreq>
+        <priority>1.00</priority>
+    </url>
+    <url>
+        <loc>http://1000.tech/ru</loc>
+        <changefreq>monthly</changefreq>
+        <priority>1.00</priority>
+    </url>
+    <url>
+        <loc>http://1000.tech/en/insteadman</loc>
+        <changefreq>monthly</changefreq>
+        <priority>1.00</priority>
+    </url>
+    <url>
+        <loc>http://1000.tech/ru/insteadman</loc>
+        <changefreq>monthly</changefreq>
+        <priority>1.00</priority>
+    </url>
+    <url>
+        <loc>http://1000.tech/en/godlike.css</loc>
+        <changefreq>monthly</changefreq>
+        <priority>1.00</priority>
+    </url>
+    <url>
+        <loc>http://1000.tech/ru/godlike.css</loc>
+        <changefreq>monthly</changefreq>
+        <priority>1.00</priority>
+    </url>
+</urlset>

@@ -1,13 +1,34 @@
-doctype html
-html
-	include head/head
+extends layouts/layout
 
-	body
+block vars
+	-
+		page = {
+		language: "en",
+		title: "1000.tech. We've got the special power — we make future",
+		desc: "Our specialisation is web-sites and Windows, macOS, GNU/Linux development.",
+		keywords: "soft, application, website, development",
+		author: "Vadim Zaretskiy",
+		appTitle: "1000.tech",
+		type: "website",
+		card: "summary",
+		image: "img/test-img.jpg",
+		url: "http://1000.tech/en",
+		site_name: "1000.tech",
+		domain: "1000.tech"
+		}
 
-		//- Content
-		include components/header
-		include components/main
-		include components/footer
-
-		//- Scripts
-		script(type='text/javascript', src='/js/script.js')
+block content
+	main(role='main')
+		article(role='article')
+			h1
+				| Your Site
+			div
+				| Your image
+				picture
+					source(srcset="img/test-img.webp", type="image/webp")
+					img(src='img/test-img.jpg', alt='', width='1024px')
+			span
+				| Your icons
+				i.i-fb
+				i.i-tw
+				i.i-vk

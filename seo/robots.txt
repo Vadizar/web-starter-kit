@@ -1,0 +1,29 @@
+User-agent: Yandex
+Allow: /
+Allow: /en
+Allow: /ru
+Allow: /en/insteadman
+Allow: /ru/insteadman
+Allow: /en/godlike.css
+Allow: /ru/godlike.css
+
+User-agent: GoogleBot
+Allow: /
+Allow: /en
+Allow: /ru
+Allow: /en/insteadman
+Allow: /ru/insteadman
+Allow: /en/godlike.css
+Allow: /ru/godlike.css
+
+User-agent: *
+Allow: /
+Allow: /en
+Allow: /ru
+Allow: /en/insteadman
+Allow: /ru/insteadman
+Allow: /en/godlike.css
+Allow: /ru/godlike.css
+
+Host: http://1000.tech
+Sitemap: http://1000.tech/sitemap.xml

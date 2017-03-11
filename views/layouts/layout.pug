@@ -1,0 +1,20 @@
+doctype html
+
+//- Global variables
+block vars
+
+//- Template
+html(lang="" + page.language)
+    include ../partials/head
+
+    body
+
+        //- Content
+        include ../partials/header
+
+        block content
+
+        include ../partials/footer
+
+        //- Scripts
+        script(type='text/javascript', src='js/script.js')

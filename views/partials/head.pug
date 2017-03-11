@@ -1,0 +1,50 @@
+head
+   meta(charset='utf-8')
+   meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+   title=page.title
+   meta(name='description', content=page.desc)
+   meta(name='keywords', content=page.keywords)
+   meta(name='author', content=page.author)
+
+   //- Color theme in Android
+   meta(name='theme-color', content='#F0F3F7')
+
+   //- App name in iOS
+   meta(name="apple-mobile-web-app-title", content=page.appTitle)
+
+   //- Facebook markup
+   meta(property='og:type', content=page.type)
+   meta(property='og:title', content=page.title)
+   meta(property='og:description', content=page.desc)
+   meta(property='og:image', content=page.image)
+   meta(property='og:url', content=page.url)
+   meta(property='og:site_name', content=page.site_name)
+
+   //- Twitter markup
+   meta(property='twitter:card', content=page.card)
+   meta(property='twitter:title', content=page.title)
+   meta(property='twitter:description', content=page.desc)
+   meta(property='twitter:image', content=page.image)
+   meta(property='twitter:url', content=page.url)
+   meta(property='twitter:site', content=page.site_name)
+   meta(property='twitter:domain', content=page.domain)
+
+   //- Favicons
+   link(rel='shortcut icon', href='img/favicons/favicon.ico', type='image/x-icon')
+   link(rel='icon', sizes='192x192', href='img/favicons/android-chrome-192x192.png')
+   link(rel='apple-touch-icon', href='img/favicons/apple-touch-icon.png')
+   link(rel='apple-touch-icon', sizes='57x57', href='img/favicons/apple-touch-icon-57x57.png')
+   link(rel='apple-touch-icon', sizes='114x114', href='img/favicons/apple-touch-icon-114x114.png')
+   link(rel='apple-touch-icon', sizes='72x72', href='img/favicons/apple-touch-icon-72x72.png')
+   link(rel='apple-touch-icon', sizes='144x144', href='img/favicons/apple-touch-icon-144x144.png')
+   link(rel='mask-icon', href='img/favicons/safari-pinned-tab.svg', color='#333')
+
+   //- Styles
+   link(rel='stylesheet', property='stylesheet', type='text/css', href='css/style.css')
+
+   //- Internet Explorer fix
+   | <!--[if IE]><script src="js/ie.js"></script><![endif]-->
+
+   //- Webp Images
+   script
+      include ../../js/embded/webp.js
