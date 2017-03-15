@@ -11,10 +11,11 @@ var
     favicons = require("gulp-real-favicon"),
     openurl = require('openurl'),
     del = require('del'),
+    path = require('path'),
+    notify = require('gulp-notify'),
     nib = require('nib'),
     connect = require('connect'),
     serveStatic = require('serve-static');
-
 
 // Compiling Pug in HTML
 gulp.task('views', function() {
@@ -29,9 +30,16 @@ gulp.task('views', function() {
 gulp.task('views-dev', function() {
     gulp.src('./views/*.pug')
         .pipe($.newer('./public/'))
-        .pipe($.pug({
-            pretty: true
-        }))
+        .pipe(
+            $.pug({
+                pretty: true
+            })
+            .on('error', notify.onError({
+                title  : "Pug Error",
+                message: "<%= error.message %>",
+                sound: "Blow"
+            }))
+        )
         .pipe(gulp.dest('./public/'))
         .pipe($.livereload())
 });
@@ -55,9 +63,16 @@ gulp.task('css-dev', function() {
     gulp.src('./styl/*.styl')
         .pipe($.newer('./public/css/'))
         .pipe(sourcemaps.init())
-        .pipe($.stylus({
-            use: nib()
-        }))
+        .pipe(
+            $.stylus({
+                use: nib()
+            })
+            .on('error', notify.onError({
+                title  : "Stylus Error",
+                message: "<%= error.message %>",
+                sound: "Blow"
+            }))
+        )
         .pipe($.autoprefixer('last 3 versions'))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest('./public/css/'))
@@ -253,6 +268,17 @@ gulp.task('watch', function() {
     watch('./seo/**/*', function() { gulp.start('seo') });
 });
 
+// Watcher | Develop
+gulp.task('watch-dev', function() {
+    watch('./views/**/*', function() { gulp.start('views-dev') });
+    watch('./styl/**/*', function() { gulp.start('css-dev') });
+    watch('./js/**/*', function() { gulp.start(['js-dev', 'js-embded-dev']) });
+    watch('./img/**/*', function() { gulp.start(['imagemin', 'webp']) });
+    watch('./img/favicons/**/*', function() { gulp.start('favicons') });
+    watch('./fonts/**/*', function() { gulp.start(['iconfont', 'fonts']) });
+    watch('./seo/**/*', function() { gulp.start('seo') });
+});
+
 // Compiling
 gulp.task('default', function(cb) {
     return sequence(
@@ -267,6 +293,6 @@ gulp.task('dev', function(cb) {
     return sequence(
         'css-dev','js-dev','js-embded-dev',
         'imagemin','webp','favicons','iconfont','fonts','views-dev',
-        'server','watch','open','seo',
+        'server','watch-dev','open','seo',
         cb);
 });

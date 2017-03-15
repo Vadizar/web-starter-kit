@@ -18,7 +18,7 @@ bower i
 gulp
 ```
 
-###Run development tasks with sourcemaps:
+###Run development tasks with sourcemaps and notify errors:
 ```smartyconfig
 gulp dev
 ```
