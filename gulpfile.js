@@ -1,18 +1,13 @@
 var
     gulp = require('gulp'),
     $ = require('gulp-load-plugins')(),
-    watch = require('gulp-watch'),
-    sequence = require('run-sequence'),
     cmq = require('gulp-group-css-media-queries'),
-    gs = require('gulp-selectors'),
-    sourcemaps = require('gulp-sourcemaps'),
     imageminJR = require('imagemin-jpeg-recompress'),
     imageminSvgo = require('imagemin-svgo'),
     favicons = require("gulp-real-favicon"),
     openurl = require('openurl'),
     del = require('del'),
     path = require('path'),
-    notify = require('gulp-notify'),
     nib = require('nib'),
     connect = require('connect'),
     serveStatic = require('serve-static');
@@ -34,7 +29,7 @@ gulp.task('views-dev', function() {
             $.pug({
                 pretty: true
             })
-            .on('error', notify.onError({
+            .on('error', $.notify.onError({
                 title  : "Pug Error",
                 message: "<%= error.message %>",
                 sound: "Blow"
@@ -62,19 +57,19 @@ gulp.task('css', function() {
 gulp.task('css-dev', function() {
     gulp.src('./styl/*.styl')
         .pipe($.newer('./public/css/'))
-        .pipe(sourcemaps.init())
+        .pipe($.sourcemaps.init())
         .pipe(
             $.stylus({
                 use: nib()
             })
-            .on('error', notify.onError({
+            .on('error', $.notify.onError({
                 title  : "Stylus Error",
                 message: "<%= error.message %>",
                 sound: "Blow"
             }))
         )
         .pipe($.autoprefixer('last 3 versions'))
-        .pipe(sourcemaps.write())
+        .pipe($.sourcemaps.write())
         .pipe(gulp.dest('./public/css/'))
         .pipe($.livereload())
 });
@@ -86,7 +81,7 @@ gulp.task('gs', function() {
         ids: '*'
     };
     gulp.src(['./public/**/*.css', './public/**/*.html'])
-        .pipe(gs.run({}, ignores))
+        .pipe($.selectors.run({}, ignores))
         .pipe(gulp.dest('./public/'))
 });
 
@@ -108,9 +103,9 @@ gulp.task('js-dev', function(){
         './js/jquery.js',
         './js/main.js'
     ])
-        .pipe(sourcemaps.init())
+        .pipe($.sourcemaps.init())
         .pipe($.concat('script.js'))
-        .pipe(sourcemaps.write())
+        .pipe($.sourcemaps.write())
         .pipe(gulp.dest('./public/js/'))
         .pipe($.livereload())
 });
@@ -128,8 +123,8 @@ gulp.task('js-embded', function(){
 gulp.task('js-embded-dev', function(){
     gulp.src('./js/embded/**/*')
         .pipe($.newer('./public/js/'))
-        .pipe(sourcemaps.init())
-        .pipe(sourcemaps.write())
+        .pipe($.sourcemaps.init())
+        .pipe($.sourcemaps.write())
         .pipe(gulp.dest('./public/js/'))
         .pipe($.livereload())
 });
@@ -259,29 +254,29 @@ gulp.task('open', function () {
 
 // Watcher
 gulp.task('watch', function() {
-    watch('./views/**/*', function() { gulp.start('views') });
-    watch('./styl/**/*', function() { gulp.start('css') });
-    watch('./js/**/*', function() { gulp.start(['js', 'js-embded']) });
-    watch('./img/**/*', function() { gulp.start(['imagemin', 'webp']) });
-    watch('./img/favicons/**/*', function() { gulp.start('favicons') });
-    watch('./fonts/**/*', function() { gulp.start(['iconfont', 'fonts']) });
-    watch('./seo/**/*', function() { gulp.start('seo') });
+    $.watch('./views/**/*', function() { gulp.start('views') });
+    $.watch('./styl/**/*', function() { gulp.start('css') });
+    $.watch('./js/**/*', function() { gulp.start(['js', 'js-embded']) });
+    $.watch('./img/**/*', function() { gulp.start(['imagemin', 'webp']) });
+    $.watch('./img/favicons/**/*', function() { gulp.start('favicons') });
+    $.watch('./fonts/**/*', function() { gulp.start(['iconfont', 'fonts']) });
+    $.watch('./seo/**/*', function() { gulp.start('seo') });
 });
 
 // Watcher | Develop
 gulp.task('watch-dev', function() {
-    watch('./views/**/*', function() { gulp.start('views-dev') });
-    watch('./styl/**/*', function() { gulp.start('css-dev') });
-    watch('./js/**/*', function() { gulp.start(['js-dev', 'js-embded-dev']) });
-    watch('./img/**/*', function() { gulp.start(['imagemin', 'webp']) });
-    watch('./img/favicons/**/*', function() { gulp.start('favicons') });
-    watch('./fonts/**/*', function() { gulp.start(['iconfont', 'fonts']) });
-    watch('./seo/**/*', function() { gulp.start('seo') });
+    $.watch('./views/**/*', function() { gulp.start('views-dev') });
+    $.watch('./styl/**/*', function() { gulp.start('css-dev') });
+    $.watch('./js/**/*', function() { gulp.start(['js-dev', 'js-embded-dev']) });
+    $.watch('./img/**/*', function() { gulp.start(['imagemin', 'webp']) });
+    $.watch('./img/favicons/**/*', function() { gulp.start('favicons') });
+    $.watch('./fonts/**/*', function() { gulp.start(['iconfont', 'fonts']) });
+    $.watch('./seo/**/*', function() { gulp.start('seo') });
 });
 
 // Compiling
 gulp.task('default', function(cb) {
-    return sequence(
+    return $.sequence(
         'css','js','js-embded',
         'imagemin','webp','favicons','iconfont','fonts','views',
         'server','watch','open','seo',
@@ -290,7 +285,7 @@ gulp.task('default', function(cb) {
 
 // Compiling | Develop
 gulp.task('dev', function(cb) {
-    return sequence(
+    return $.sequence(
         'css-dev','js-dev','js-embded-dev',
         'imagemin','webp','favicons','iconfont','fonts','views-dev',
         'server','watch-dev','open','seo',
