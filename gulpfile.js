@@ -1,16 +1,9 @@
 var
     gulp = require('gulp'),
     $ = require('gulp-load-plugins')(),
-    cmq = require('gulp-group-css-media-queries'),
-    imageminJR = require('imagemin-jpeg-recompress'),
-    imageminSvgo = require('imagemin-svgo'),
-    favicons = require("gulp-real-favicon"),
-    openurl = require('openurl'),
-    del = require('del'),
-    path = require('path'),
-    nib = require('nib'),
-    connect = require('connect'),
-    serveStatic = require('serve-static');
+    plugins = require('gulp-load-plugins')({
+        pattern: '*'
+    });
 
 // Compiling Pug in HTML
 gulp.task('views', function() {
@@ -44,9 +37,9 @@ gulp.task('css', function() {
     gulp.src('./styl/*.styl')
         .pipe($.newer('./public/css/'))
         .pipe($.stylus({
-            use: nib()
+            use: plugins.nib()
         }))
-        .pipe(cmq())
+        .pipe($.groupCssMediaQueries())
         .pipe($.csso())
         .pipe($.autoprefixer('last 3 versions'))
         .pipe(gulp.dest('./public/css/'))
@@ -60,7 +53,7 @@ gulp.task('css-dev', function() {
         .pipe($.sourcemaps.init())
         .pipe(
             $.stylus({
-                use: nib()
+                use: plugins.nib()
             })
             .on('error', $.notify.onError({
                 title  : "Stylus Error",
@@ -134,16 +127,17 @@ gulp.task('imagemin', function() {
     gulp.src('./img/**/*')
         .pipe($.newer('./public/img/'))
         .pipe($.imagemin([
-            imageminJR({
+            plugins.imageminJpegRecompress({
                 method: 'ms-ssim'
             }),
-            imageminSvgo({
+            plugins.imageminSvgo({
                 plugins: [
                     {removeViewBox: false}
                 ]
             })
         ]))
         .pipe(gulp.dest('./public/img/'))
+        .pipe($.livereload())
 });
 
 // Generate Webp
@@ -155,7 +149,7 @@ gulp.task('webp', function() {
 
 // Generate favicons
 gulp.task('favicons', function () {
-    favicons.generateFavicon({
+    $.realFavicon.generateFavicon({
         masterPicture: './img/favicons/favicon.png',
         design: {
             desktopBrowser: {},
@@ -195,9 +189,9 @@ gulp.task('iconfont', function() {
     var
         fontName = 'icon-font',
         cssClass = 'i';
-    gulp.src(['./fonts/icon-font/*.svg'])
+    gulp.src(['./fonts/icon-font/**/*.svg'])
         .pipe($.imagemin([
-            imageminSvgo({
+            plugins.imageminSvgo({
                 plugins: [
                     {removeViewBox: true}
                 ]
@@ -225,6 +219,7 @@ gulp.task('fonts', function() {
     gulp.src('./fonts/text-font/*')
         .pipe($.newer('./public/fonts/'))
         .pipe(gulp.dest('./public/fonts/'))
+        .pipe($.livereload())
 });
 
 // Replace seo rule
@@ -236,20 +231,20 @@ gulp.task('seo', function() {
 
 // Task for clean public
 gulp.task('clean', function() {
-    del('./public/')
+    plugins.del('./public/')
 });
 
 // Web-server
 gulp.task('server', function() {
     $.livereload.listen();
-    connect()
+    plugins.connect()
         .use(require('connect-livereload')())
-        .use(serveStatic(__dirname + '/public'))
+        .use(plugins.serveStatic(__dirname + '/public'))
         .listen('5000');
 });
 
 gulp.task('open', function () {
-    openurl.open('http://localhost:5000')
+    plugins.openurl.open('http://localhost:5000')
 });
 
 // Watcher
