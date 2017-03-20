@@ -1,7 +1,6 @@
 var
     gulp = require('gulp'),
-    $ = require('gulp-load-plugins')(),
-    plugins = require('gulp-load-plugins')({
+    $ = require('gulp-load-plugins')({
         pattern: '*'
     });
 
@@ -37,7 +36,7 @@ gulp.task('css', function() {
     gulp.src('./styl/*.styl')
         .pipe($.newer('./public/css/'))
         .pipe($.stylus({
-            use: plugins.nib()
+            use: $.nib()
         }))
         .pipe($.groupCssMediaQueries())
         .pipe($.csso())
@@ -53,7 +52,7 @@ gulp.task('css-dev', function() {
         .pipe($.sourcemaps.init())
         .pipe(
             $.stylus({
-                use: plugins.nib()
+                use: $.nib()
             })
             .on('error', $.notify.onError({
                 title  : "Stylus Error",
@@ -127,10 +126,28 @@ gulp.task('imagemin', function() {
     gulp.src('./img/**/*')
         .pipe($.newer('./public/img/'))
         .pipe($.imagemin([
-            plugins.imageminJpegRecompress({
+            $.imageminJpegRecompress({
                 method: 'ms-ssim'
             }),
-            plugins.imageminSvgo({
+            $.imageminSvgo({
+                plugins: [
+                    {removeViewBox: false}
+                ]
+            })
+        ]))
+        .pipe(gulp.dest('./public/img/'))
+        .pipe($.livereload())
+});
+
+// Optimizing images | Develop
+gulp.task('imagemin-dev', function() {
+    gulp.src('./img/**/*')
+        .pipe($.newer('./public/img/'))
+        .pipe($.imagemin([
+            $.imageminJpegRecompress({
+                method: 'smallfry'
+            }),
+            $.imageminSvgo({
                 plugins: [
                     {removeViewBox: false}
                 ]
@@ -191,7 +208,7 @@ gulp.task('iconfont', function() {
         cssClass = 'i';
     gulp.src(['./fonts/icon-font/**/*.svg'])
         .pipe($.imagemin([
-            plugins.imageminSvgo({
+            $.imageminSvgo({
                 plugins: [
                     {removeViewBox: true}
                 ]
@@ -231,20 +248,20 @@ gulp.task('seo', function() {
 
 // Task for clean public
 gulp.task('clean', function() {
-    plugins.del('./public/')
+    $.del('./public/')
 });
 
 // Web-server
 gulp.task('server', function() {
     $.livereload.listen();
-    plugins.connect()
+    $.connect()
         .use(require('connect-livereload')())
-        .use(plugins.serveStatic(__dirname + '/public'))
+        .use($.serveStatic(__dirname + '/public'))
         .listen('5000');
 });
 
 gulp.task('open', function () {
-    plugins.openurl.open('http://localhost:5000')
+    $.openurl.open('http://localhost:5000')
 });
 
 // Watcher
@@ -263,7 +280,7 @@ gulp.task('watch-dev', function() {
     $.watch('./views/**/*', function() { gulp.start('views-dev') });
     $.watch('./styl/**/*', function() { gulp.start('css-dev') });
     $.watch('./js/**/*', function() { gulp.start(['js-dev', 'js-embded-dev']) });
-    $.watch('./img/**/*', function() { gulp.start(['imagemin', 'webp']) });
+    $.watch('./img/**/*', function() { gulp.start(['imagemin-dev', 'webp']) });
     $.watch('./img/favicons/**/*', function() { gulp.start('favicons') });
     $.watch('./fonts/**/*', function() { gulp.start(['iconfont', 'fonts']) });
     $.watch('./seo/**/*', function() { gulp.start('seo') });
@@ -282,7 +299,7 @@ gulp.task('default', function(cb) {
 gulp.task('dev', function(cb) {
     return $.sequence(
         'css-dev','js-dev','js-embded-dev',
-        'imagemin','webp','favicons','iconfont','fonts','views-dev',
+        'imagemin-dev','webp','favicons','iconfont','fonts','views-dev',
         'server','watch-dev','open','seo',
         cb);
 });
