@@ -175,21 +175,34 @@ gulp.task('favicons', function () {
                 pictureAspect: 'noChange',
                 manifest: {
                     name: '1000.tech',
-                    display: 'browser',
-                    orientation: 'notSet',
+                    short_name: '1000.tech',
+                    display: 'standalone',
+                    background_color: '#fff',
+                    theme_color: '#fff',
                     onConflict: 'override',
                     declared: true
                 }
             },
             ios: {
                 onConflict: 'override',
-                pictureAspect: 'backgroundAndMargin',
-                backgroundColor: '#fff',
-                margin: '15%'
+                pictureAspect: 'backgroundAndMargin'
             },
             safariPinnedTab: {
                 onConflict: 'override',
                 pictureAspect: 'silhouette'
+            },
+            windows: {
+                picture_aspect: 'white_silhouette',
+                background_color: '#333',
+                assets: {
+                    windows_80_ie_10_tile: true,
+                    windows_10_ie_11_edge_tiles: {
+                        small: false,
+                        medium: true,
+                        big: true,
+                        rectangle: false
+                    }
+                }
             }
         },
         settings: {

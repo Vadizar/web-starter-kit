@@ -6,12 +6,6 @@ head
    meta(name='keywords', content=page.keywords)
    meta(name='author', content=page.author)
 
-   //- Color theme in Android
-   meta(name='theme-color', content='#F0F3F7')
-
-   //- App name in iOS
-   meta(name="apple-mobile-web-app-title", content=page.appTitle)
-
    //- Facebook markup
    meta(property='og:type', content=page.type)
    meta(property='og:title', content=page.title)
@@ -29,15 +23,31 @@ head
    meta(property='twitter:site', content=page.site_name)
    meta(property='twitter:domain', content=page.domain)
 
+   //- Browserconfig.xml
+   meta(name='manifest', content='img/favicons/browserconfig.xml')
+
+   //- Color theme in Android
+   meta(name='theme-color', content='#F0F3F7')
+
+   //- App color in iOS
+   meta(name='apple-mobile-web-app-status-bar-style', content='black-translucent')
+
+   //- App name in iOS
+   meta(name="apple-mobile-web-app-title", content=page.appTitle)
+
+   //- App standalone mode in iOS
+   meta(name="apple-mobile-web-app-capable", content='yes')
+
    //- Favicons
    link(rel='shortcut icon', href='img/favicons/favicon.ico', type='image/x-icon')
    link(rel='icon', sizes='192x192', href='img/favicons/android-chrome-192x192.png')
    link(rel='apple-touch-icon', href='img/favicons/apple-touch-icon.png')
-   link(rel='apple-touch-icon', sizes='57x57', href='img/favicons/apple-touch-icon-57x57.png')
-   link(rel='apple-touch-icon', sizes='114x114', href='img/favicons/apple-touch-icon-114x114.png')
-   link(rel='apple-touch-icon', sizes='72x72', href='img/favicons/apple-touch-icon-72x72.png')
-   link(rel='apple-touch-icon', sizes='144x144', href='img/favicons/apple-touch-icon-144x144.png')
+   link(rel='apple-touch-icon', sizes='152x152', href='img/favicons/apple-touch-icon-152x152.png')
+   link(rel='apple-touch-icon', sizes='180x180', href='img/favicons/apple-touch-icon-180x180.png')
    link(rel='mask-icon', href='img/favicons/safari-pinned-tab.svg', color='#333')
+
+   //- Manifest.json
+   link(rel='manifest', href='img/favicons/manifest.json')
 
    //- Styles
    link(rel='stylesheet', property='stylesheet', type='text/css', href='css/style.css')
