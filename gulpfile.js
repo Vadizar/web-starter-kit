@@ -220,13 +220,6 @@ gulp.task('iconfont', function() {
         fontName = 'icon-font',
         cssClass = 'i';
     gulp.src(['./fonts/icon-font/**/*.svg'])
-        .pipe($.imagemin([
-            $.imageminSvgo({
-                plugins: [
-                    {removeViewBox: true}
-                ]
-            })
-        ]))
         .pipe($.iconfontCss({
             fontName: fontName,
             cssClass: cssClass,
