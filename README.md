@@ -1,6 +1,6 @@
 # 1000.tech Web Starter Kit
 
-Starter Kit, which contains all the standard frontend developer tasks - build styles and layout, image optimization, JS minification, creating icon-font from SVG and much more.
+Starter Kit, which contains all the standard frontend developer tasks - build styles and layout, image optimization, JS minification, creating icon-font from SVG and much more. Developed by [1000.tech](http://1000.tech) company.
 
 ## Install
 
@@ -37,6 +37,10 @@ gulp favicons
 ```smartyconfig
 gulp clean
 ```
+
+### Tested on:
+ 
+**npm v4.4.4** and **node v7.7.3**
 
 ## Demo
 Used on [MobiDevices](https://mobidevices.ru)
