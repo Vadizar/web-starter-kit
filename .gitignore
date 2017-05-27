@@ -3,5 +3,5 @@
 npm-debug.log
 node_modules
 bower_components
-styl/components/icon-font.styl
+styl/components/font/icon-font.styl
 public

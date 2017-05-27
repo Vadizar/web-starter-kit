@@ -1,3 +1,5 @@
+// Support placeholder in IE 9
+
 ! function(a) {
   "use strict";
 

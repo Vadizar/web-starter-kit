@@ -8,11 +8,11 @@
   },
   "license": "WTFPL",
   "dependencies": {
-    "connect": "^3.4.1",
+    "connect": "^3.6.2",
     "connect-livereload": "^0.6.0",
     "del": "^2.2.2",
     "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^3.1.1",
+    "gulp-autoprefixer": "^4.0.0",
     "gulp-concat": "^2.6.0",
     "gulp-csso": "^3.0.0",
     "gulp-favicons": "^2.2.6",
@@ -26,17 +26,17 @@
     "gulp-notify": "^3.0.0",
     "gulp-pug": "^3.3.0",
     "gulp-real-favicon": "^0.2.1",
-    "gulp-selectors": "^0.1.9",
+    "gulp-selectors": "^0.1.10",
     "gulp-sequence": "^0.4.5",
     "gulp-sourcemaps": "^2.6.0",
-    "gulp-stylus": "^2.5.0",
-    "gulp-uglify": "^2.1.2",
+    "gulp-stylus": "^2.6.0",
+    "gulp-uglify": "^3.0.0",
     "gulp-watch": "^4.3.9",
     "gulp-webp": "^2.3.0",
     "imagemin-jpeg-recompress": "^5.1.0",
-    "imagemin-svgo": "^5.2.1",
+    "imagemin-svgo": "^5.2.2",
     "nib": "^1.1.0",
     "openurl": "^1.1.1",
-    "serve-static": "^1.12.1"
+    "serve-static": "^1.12.3"
   }
 }

@@ -102,18 +102,18 @@ gulp.task('js-dev', function(){
         .pipe($.livereload())
 });
 
-// Replace embded JS
-gulp.task('js-embded', function(){
-    gulp.src('./js/embded/**/*')
+// Replace inline JS
+gulp.task('js-inline', function(){
+    gulp.src('./js/inline/**/*')
         .pipe($.newer('./public/js/'))
         .pipe($.uglify())
         .pipe(gulp.dest('./public/js/'))
         .pipe($.livereload())
 });
 
-// Replace embded JS | Develop
-gulp.task('js-embded-dev', function(){
-    gulp.src('./js/embded/**/*')
+// Replace inline JS | Develop
+gulp.task('js-inline-dev', function(){
+    gulp.src('./js/inline/**/*')
         .pipe($.newer('./public/js/'))
         .pipe($.sourcemaps.init())
         .pipe($.sourcemaps.write())
@@ -274,7 +274,7 @@ gulp.task('open', function () {
 gulp.task('watch', function() {
     $.watch('./views/**/*', function() { gulp.start('views') });
     $.watch('./styl/**/*', function() { gulp.start('css') });
-    $.watch('./js/**/*', function() { gulp.start(['js', 'js-embded']) });
+    $.watch('./js/**/*', function() { gulp.start(['js', 'js-inline']) });
     $.watch('./img/**/*', function() { gulp.start(['imagemin', 'webp']) });
     $.watch('./img/favicons/**/*', function() { gulp.start('favicons') });
     $.watch('./fonts/**/*', function() { gulp.start(['iconfont', 'fonts']) });
@@ -285,7 +285,7 @@ gulp.task('watch', function() {
 gulp.task('watch-dev', function() {
     $.watch('./views/**/*', function() { gulp.start('views-dev') });
     $.watch('./styl/**/*', function() { gulp.start('css-dev') });
-    $.watch('./js/**/*', function() { gulp.start(['js-dev', 'js-embded-dev']) });
+    $.watch('./js/**/*', function() { gulp.start(['js-dev', 'js-inline-dev']) });
     $.watch('./img/**/*', function() { gulp.start(['imagemin-dev', 'webp']) });
     $.watch('./img/favicons/**/*', function() { gulp.start('favicons') });
     $.watch('./fonts/**/*', function() { gulp.start(['iconfont', 'fonts']) });
@@ -295,7 +295,7 @@ gulp.task('watch-dev', function() {
 // Compiling
 gulp.task('default', function(cb) {
     return $.sequence(
-        'css','js','js-embded',
+        'css','js','js-inline',
         'imagemin','webp','favicons','iconfont','fonts','views',
         'server','watch','open','seo',
         cb);
@@ -304,8 +304,8 @@ gulp.task('default', function(cb) {
 // Compiling | Develop
 gulp.task('dev', function(cb) {
     return $.sequence(
-        'css-dev','js-dev','js-embded-dev',
+        'css-dev','js-dev','js-inline-dev',
         'imagemin-dev','webp','favicons','iconfont','fonts','views-dev',
-        'server','watch-dev','open','seo',
+        'server','watch-dev','open',
         cb);
 });
