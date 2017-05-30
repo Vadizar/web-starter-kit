@@ -27,29 +27,27 @@
     .pull-right
         float right
 
-.col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12
+[class*="col-"]
     position relative
     min-height 1px
-    padding 0 15px
-    @media (min-width 720px)
+    padding 0 12px
+    @media (min-width 480px)
         display inline-block
         vertical-align top
 
-@media (min-width 720px)
+@media (min-width 480px)
     .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12
         width 100%
-    .col-5
-        width 83.33333333%
-    .col-4
-        width 66.66666667%
-    .col-3
+    .col-3, .col-4, .col-5
         width 50%
+    .col-2-4
+        width 40%
     .col-2
         width 33.33333333%
     .col-1
         width 16.66666667%
 
-@media (min-width 1024px)
+@media (min-width 800px)
     .col-12
         width 100%
     .col-11
@@ -70,6 +68,8 @@
         width 33.33333333%
     .col-3
         width 25%
+    .col-2-4
+        width 20%
     .col-2
         width 16.66666667%
     .col-1
