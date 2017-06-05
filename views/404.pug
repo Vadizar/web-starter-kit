@@ -1,9 +1,21 @@
 doctype html
 html
    head
-      //meta(http-equiv="refresh", content="7;/")
-      link(rel='stylesheet', property='stylesheet', type='text/css', href='css/style.css')
+      //- Styles
       link(rel='stylesheet', property='stylesheet', type='text/css', href='css/404.css')
+
    body
-      .glitch(data-text="ХУЙ")
-         | 404
+      #particles-js
+         canvas.particles-js-canvas-el(style='width: 100%; height: 100%;')
+      .container
+         .text
+            h1 404
+            h2 Go 
+               a(href='/')
+                  | hom
+                  span e
+               |  You're Drunk
+
+      //- Scripts
+      script(type='text/javascript', src='js/particles.js')
+      script(type='text/javascript', src='js/404.js')

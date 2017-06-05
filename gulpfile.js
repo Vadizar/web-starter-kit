@@ -259,15 +259,31 @@ gulp.task('clean', function() {
 
 // Web-server
 gulp.task('server', function() {
+    var port = process.argv[4] || 5000;
     $.livereload.listen();
-    $.connect()
-        .use(require('connect-livereload')())
-        .use($.serveStatic(__dirname + '/public'))
-        .listen('5000');
-});
+    $.express()
 
-gulp.task('open', function () {
-    $.openurl.open('http://localhost:5000')
+        // Livereload
+        .use($.connectLivereload({ port: 35729 }))
+
+        // View dir
+        .use($.express.static(__dirname + '/public'))
+
+        // View engine setup
+        .set('view engine', 'pug')
+
+        // Handle 404
+        .get('*', function(req, res){
+            res.status(404);
+            res.render('404');
+        })
+
+        // Port
+        .listen(port, function (err) {
+            if (err) throw err;
+            console.log('Server start on ' + port + ' port.');
+            $.openurl.open('http://localhost:' + port);
+        });
 });
 
 // Watcher
@@ -297,7 +313,7 @@ gulp.task('default', function(cb) {
     return $.sequence(
         'css','js','js-inline',
         'imagemin','webp','favicons','iconfont','fonts','views',
-        'server','watch','open','seo',
+        'server','watch','seo',
         cb);
 });
 
@@ -306,6 +322,6 @@ gulp.task('dev', function(cb) {
     return $.sequence(
         'css-dev','js-dev','js-inline-dev',
         'imagemin-dev','webp','favicons','iconfont','fonts','views-dev',
-        'server','watch-dev','open',
+        'server','watch-dev',
         cb);
 });

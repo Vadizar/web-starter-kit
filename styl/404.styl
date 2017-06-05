@@ -1,170 +1,62 @@
-body {
-    background: #000;
-    font-family: 'OS', sans-serif;
+@import "../bower_components/godlike.css/godlike"
+
+@import "components/font/font.styl"
+
+body
+    height: 100%;
+    font-family: "OS", sans-serif;
+
+.container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
-.glitch {
-    color: #fff;
-    font-size: 100px;
+h1, h2 {
+    letter-spacing: 12px;
+    text-transform: uppercase;
+    text-align: center;
+    color: #B5B5B5;
+    text-shadow: -3px 0 0 rgba(255,0,0,.7), 3px 0 0 rgba(0,255,255,.7);
+}
+
+h1 {
+    font-weight: bold;
+    font-size: 90px;
+}
+
+h2 {
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 50px;
+    a {
+        border-bottom: 5px solid #B5B5B5;
+        margin-right: 7px;
+        &:hover {
+            color: #808080;
+            border-bottom: 5px solid #808080;
+        }
+        span {
+            letter-spacing: 3px;
+            vertical-align baseline
+        }
+    }
+}
+
+.text {
     position: relative;
-    max-width: 400px;
-    margin: auto;
-    padding: 30px;
-    white-space: nowrap;
-    &:after {
-        content: attr(data-text);
-        position: absolute;
-        left: 30px;
-        text-shadow: -1px 0 red;
-        top: 30px;
-        color: white;
-        background: black;
-        overflow: hidden;
-        clip: rect(0, 900px, 0, 0);
-        animation: noise-anim 2s infinite linear alternate-reverse;
-    }
-    &:before {
-        content: attr(data-text);
-        position: absolute;
-        left: 20px;
-        text-shadow: 1px 0 blue;
-        top: 20px;
-        color: white;
-        background: black;
-        overflow: hidden;
-        clip: rect(0, 900px, 0, 0);
-        animation: noise-anim-2 3s infinite linear alternate-reverse;
-    }
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    padding 0 20px;
+    user-select none
 }
 
-@keyframes noise-anim {
-    0% {
-        clip: rect(53px, 9999px, 52px, 0);
-    }
-    5% {
-        clip: rect(6px, 9999px, 79px, 0);
-    }
-    10% {
-        clip: rect(68px, 9999px, 92px, 0);
-    }
-    15% {
-        clip: rect(93px, 9999px, 6px, 0);
-    }
-    20% {
-        clip: rect(23px, 9999px, 60px, 0);
-    }
-    25% {
-        clip: rect(1px, 9999px, 73px, 0);
-    }
-    30% {
-        clip: rect(46px, 9999px, 62px, 0);
-    }
-    35% {
-        clip: rect(32px, 9999px, 43px, 0);
-    }
-    40% {
-        clip: rect(18px, 9999px, 59px, 0);
-    }
-    45% {
-        clip: rect(40px, 9999px, 84px, 0);
-    }
-    50% {
-        clip: rect(60px, 9999px, 40px, 0);
-    }
-    55% {
-        clip: rect(89px, 9999px, 9px, 0);
-    }
-    60% {
-        clip: rect(99px, 9999px, 30px, 0);
-    }
-    65% {
-        clip: rect(50px, 9999px, 84px, 0);
-    }
-    70% {
-        clip: rect(48px, 9999px, 72px, 0);
-    }
-    75% {
-        clip: rect(90px, 9999px, 90px, 0);
-    }
-    80% {
-        clip: rect(68px, 9999px, 64px, 0);
-    }
-    85% {
-        clip: rect(83px, 9999px, 5px, 0);
-    }
-    90% {
-        clip: rect(57px, 9999px, 69px, 0);
-    }
-    95% {
-        clip: rect(55px, 9999px, 39px, 0);
-    }
-    100% {
-        clip: rect(10px, 9999px, 54px, 0);
-    }
-}
+/* ---- particles.js container ---- */
 
-@keyframes noise-anim-2 {
-    0% {
-        clip: rect(71px, 9999px, 54px, 0);
-    }
-    5% {
-        clip: rect(35px, 9999px, 40px, 0);
-    }
-    10% {
-        clip: rect(99px, 9999px, 56px, 0);
-    }
-    15% {
-        clip: rect(20px, 9999px, 45px, 0);
-    }
-    20% {
-        clip: rect(53px, 9999px, 38px, 0);
-    }
-    25% {
-        clip: rect(36px, 9999px, 37px, 0);
-    }
-    30% {
-        clip: rect(12px, 9999px, 46px, 0);
-    }
-    35% {
-        clip: rect(66px, 9999px, 90px, 0);
-    }
-    40% {
-        clip: rect(78px, 9999px, 35px, 0);
-    }
-    45% {
-        clip: rect(73px, 9999px, 15px, 0);
-    }
-    50% {
-        clip: rect(79px, 9999px, 15px, 0);
-    }
-    55% {
-        clip: rect(45px, 9999px, 36px, 0);
-    }
-    60% {
-        clip: rect(93px, 9999px, 43px, 0);
-    }
-    65% {
-        clip: rect(38px, 9999px, 50px, 0);
-    }
-    70% {
-        clip: rect(25px, 9999px, 60px, 0);
-    }
-    75% {
-        clip: rect(57px, 9999px, 59px, 0);
-    }
-    80% {
-        clip: rect(29px, 9999px, 68px, 0);
-    }
-    85% {
-        clip: rect(18px, 9999px, 18px, 0);
-    }
-    90% {
-        clip: rect(88px, 9999px, 77px, 0);
-    }
-    95% {
-        clip: rect(52px, 9999px, 61px, 0);
-    }
-    100% {
-        clip: rect(71px, 9999px, 14px, 0);
-    }
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
 }
