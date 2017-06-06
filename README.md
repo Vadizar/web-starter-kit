@@ -23,6 +23,11 @@ gulp
 gulp dev
 ```
 
+### Run on your host:
+```smartyconfig
+gulp dev --port 7000
+```
+
 ### Run selectors minify:
 ```smartyconfig
 gulp gs
@@ -40,7 +45,7 @@ gulp clean
 
 ### Tested on:
  
-**npm v4.4.4** and **node v7.7.3**
+**npm v5.0.2** and **node v7.10.0**
 
 ## Demo
 Used on [MobiDevices](https://mobidevices.ru)
