@@ -1,6 +1,7 @@
 .idea/
 .DS_Store
 npm-debug.log
+package-lock.json
 node_modules
 bower_components
 styl/components/font/icon-font.styl

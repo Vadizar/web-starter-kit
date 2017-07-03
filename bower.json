@@ -10,6 +10,6 @@
   },
   "license": "WTFPL",
   "dependencies": {
-    "godlike.css": "^3.5.4"
+    "godlike.css": "^3.5.5"
   }
 }

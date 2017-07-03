@@ -1,4 +1,20 @@
-align-center-middle()
+align()
+    position absolute
+    top 50%
+    left 50%
+    transform translate(-50%, -50%)
+
+align-center()
+    position absolute
+    left 50%
+    transform translateX(-50%)
+
+align-middle()
+    position absolute
+    top 50%
+    transform translateY(-50%)
+
+extend()
     position absolute
     top 0
     bottom 0
@@ -6,13 +22,13 @@ align-center-middle()
     right 0
     margin auto
 
-align-center()
+extend-center()
     position absolute
     left 0
     right 0
     margin auto
 
-align-middle()
+extend-middle()
     position absolute
     top 0
     bottom 0
@@ -23,3 +39,8 @@ ellipsis()
     white-space nowrap
     text-overflow ellipsis
     max-width 100%
+
+before()
+    content ''
+    position relative
+    z-index 1

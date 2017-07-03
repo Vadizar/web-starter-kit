@@ -1,4 +1,28 @@
 /*
+* Icon Font
+* ========================================================================== */
+@font-face
+    font-family 'i'
+    src: url('../fonts/icon-font.woff2') format('woff2'),
+            url('../fonts/icon-font.woff') format('woff'),
+            url('../fonts/icon-font.ttf') format('truetype')
+
+[class*="i-"]
+    position relative
+    display inline-block
+    width 1em
+    height 1em
+    &:before
+        font 16px 'i'
+        font-size inherit
+        text-rendering optimizeLegibility
+        speak none
+        font-variant normal
+        text-transform none
+        color inherit
+        align()
+
+/*
 * 300
 * ========================================================================== */
 @font-face {
@@ -35,7 +59,7 @@
     font-family: 'OS';
     font-style: normal;
     font-weight: 400;
-    src: local('Open Sans Light'), local('OpenSans-Light'),
+    src: local('Open Sans'), local('OpenSans'),
             url('../fonts/os.woff') format('woff'),
             url('../fonts/os.ttf') format('truetype');
 }
@@ -95,7 +119,7 @@
     font-family: 'OS';
     font-style: normal;
     font-weight: 700;
-    src: local('Open Sans Light'), local('OpenSans-Light'),
+    src: local('Open Sans Bold'), local('OpenSans-Bold'),
             url('../fonts/os-700.woff') format('woff'),
             url('../fonts/os-700.ttf') format('truetype');
 }
@@ -125,7 +149,7 @@
     font-family: 'OS';
     font-style: italic;
     font-weight: 400;
-    src: local('Open Sans Light'), local('OpenSans-Light'),
+    src: local('Open Sans Italic'), local('OpenSans-Italic'),
             url('../fonts/os-italic.woff') format('woff'),
             url('../fonts/os-italic.ttf') format('truetype');
 }
