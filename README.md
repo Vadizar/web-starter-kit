@@ -46,7 +46,7 @@ gulp favicons
 gulp clean
 ```
 
-### Tested on:
+## Tested on:
  
 **npm v5.0.2** and **node v7.10.0**
 
