@@ -10,8 +10,11 @@ cd MyApp
 npm i
 bower i
 ```
-
 ## Usage
+
+Run ``gulp dev`` if you are working on project. Or ``gulp``, if you want to compile a template. The project is compiled into the ``public`` folder.
+
+## Commands
 
 ### Run tasks:
 ```smartyconfig
