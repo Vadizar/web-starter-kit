@@ -19,7 +19,7 @@ gulp.task('views-dev', function() {
         .pipe($.newer('./public/'))
         .pipe(
             $.pug({
-                pretty: true
+                // pretty: true
             })
             .on('error', $.notify.onError({
                 title  : "Pug Error",
@@ -40,7 +40,7 @@ gulp.task('css', function() {
         }))
         .pipe($.groupCssMediaQueries())
         .pipe($.csso())
-        .pipe($.autoprefixer('last 3 versions'))
+        .pipe($.autoprefixer('last 2 versions'))
         .pipe(gulp.dest('./public/css/'))
         .pipe($.livereload())
 });
@@ -60,7 +60,13 @@ gulp.task('css-dev', function() {
                 sound: "Blow"
             }))
         )
-        .pipe($.autoprefixer('last 3 versions'))
+        .pipe($.autoprefixer({
+            browsers: [
+                '> 5%',
+                'last 2 versions',
+                'ie > 9'
+            ]
+        }))
         .pipe($.sourcemaps.write())
         .pipe(gulp.dest('./public/css/'))
         .pipe($.livereload())
@@ -80,7 +86,6 @@ gulp.task('gs', function() {
 // Compiling JS
 gulp.task('js', function(){
     gulp.src([
-        './js/jquery.js',
         './js/main.js'
     ])
         .pipe($.concat('script.js'))
@@ -92,13 +97,20 @@ gulp.task('js', function(){
 // Compiling JS | Develop
 gulp.task('js-dev', function(){
     gulp.src([
-        './js/jquery.js',
         './js/main.js'
     ])
         .pipe($.sourcemaps.init())
         .pipe($.concat('script.js'))
         .pipe($.sourcemaps.write())
         .pipe(gulp.dest('./public/js/'))
+        .pipe($.livereload())
+});
+
+// Replace App JS
+gulp.task('js-app', function(){
+    gulp.src('./js/app/**/*')
+        .pipe($.uglify())
+        .pipe(gulp.dest('./public/'))
         .pipe($.livereload())
 });
 
@@ -127,10 +139,14 @@ gulp.task('imagemin', function() {
         .pipe($.newer('./public/img/'))
         .pipe($.imagemin([
             $.imageminJpegRecompress({
-                method: 'ms-ssim'
+                method: 'smallfry'
             }),
             $.imageminSvgo({
                 plugins: [
+                    {removeDimensions: true},
+                    {removeAttrs: true},
+                    {removeElementsByAttr: true},
+                    {removeStyleElement: true},
                     {removeViewBox: false}
                 ]
             })
@@ -140,19 +156,11 @@ gulp.task('imagemin', function() {
 });
 
 // Optimizing images | Develop
+// Optimizing images | Develop
 gulp.task('imagemin-dev', function() {
     gulp.src('./img/**/*')
         .pipe($.newer('./public/img/'))
-        .pipe($.imagemin([
-            $.imageminJpegRecompress({
-                method: 'smallfry'
-            }),
-            $.imageminSvgo({
-                plugins: [
-                    {removeViewBox: false}
-                ]
-            })
-        ]))
+        .pipe($.imagemin())
         .pipe(gulp.dest('./public/img/'))
         .pipe($.livereload())
 });
@@ -172,35 +180,33 @@ gulp.task('favicons', function () {
             desktopBrowser: {},
             androidChrome: {
                 onConflict: 'override',
-                pictureAspect: 'noChange',
-                manifest: {
-                    name: '1000.tech',
-                    short_name: '1000.tech',
-                    display: 'standalone',
-                    background_color: '#fff',
-                    theme_color: '#fff',
-                    onConflict: 'override',
-                    declared: true
-                }
+                pictureAspect: 'backgroundAndMargin',
+                backgroundColor: '#fff',
+                margin: '15%',
+                manifest: {}
             },
             ios: {
                 onConflict: 'override',
-                pictureAspect: 'backgroundAndMargin'
+                pictureAspect: 'backgroundAndMargin',
+                backgroundColor: '#fff',
+                margin: '15%'
             },
             safariPinnedTab: {
                 onConflict: 'override',
-                pictureAspect: 'silhouette'
+                pictureAspect: 'silhouette',
+                themeColor: '#000'
             },
             windows: {
-                picture_aspect: 'white_silhouette',
-                background_color: '#333',
+                onConflict: 'override',
+                pictureAspect: 'whiteSilhouette',
+                backgroundColor: '#000',
                 assets: {
                     windows_80_ie_10_tile: true,
                     windows_10_ie_11_edge_tiles: {
-                        small: false,
+                        small: true,
                         medium: true,
                         big: true,
-                        rectangle: false
+                        rectangle: true
                     }
                 }
             }
@@ -243,6 +249,12 @@ gulp.task('fonts', function() {
         .pipe($.newer('./public/fonts/'))
         .pipe(gulp.dest('./public/fonts/'))
         .pipe($.livereload())
+});
+
+// Replace manifest.json
+gulp.task('manifest', function() {
+    gulp.src('./manifest/*')
+        .pipe(gulp.dest('./public/'))
 });
 
 // Replace seo rule
@@ -311,17 +323,17 @@ gulp.task('watch-dev', function() {
 // Compiling
 gulp.task('default', function(cb) {
     return $.sequence(
-        'css','js','js-inline',
-        'imagemin','webp','favicons','iconfont','fonts','views',
-        'server','watch','seo',
+        ['css','js','js-inline',
+        'imagemin','webp','favicons','iconfont','fonts'],'views',
+        ['server','watch','manifest','seo'],
         cb);
 });
 
 // Compiling | Develop
 gulp.task('dev', function(cb) {
     return $.sequence(
-        'css-dev','js-dev','js-inline-dev',
-        'imagemin-dev','webp','favicons','iconfont','fonts','views-dev',
-        'server','watch-dev',
+        ['css-dev','js-dev','js-inline-dev',
+        'imagemin-dev','webp','favicons','iconfont','fonts'],'views-dev',
+        ['server','watch-dev'],
         cb);
 });

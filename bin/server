@@ -1,0 +1,29 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var
+    app = require('../app'),
+    fs = require('fs-extra');
+
+
+/**
+ * Create HTTPS server and Listen on provided port
+ */
+if (process.production) {
+    var http2 = require('spdy'),
+        options = {
+            cert: fs.readFileSync('../../../etc/letsencrypt/live/1000.tech/fullchain.pem'),
+            key: fs.readFileSync('../../../etc/letsencrypt/live/1000.tech/privkey.pem')
+        };
+    http2.createServer(options, app).listen(443);
+}
+
+
+/**
+ * Create HTTP server and Listen on provided port
+ */
+var http = require('http');
+http.createServer(app).listen(process.host);

@@ -1,14 +1,27 @@
 # 1000.tech Web Starter Kit
 
-Starter Kit, which contains all the standard frontend developer tasks - build styles and layout, image optimization, JS minification, creating icon-font from SVG and much more. Developed by [1000.tech](http://1000.tech) company.
+Starter Kit, which contains all the standard Front-end Developer tasks:
+
+* Build styles and layout;
+* Image optimization, support WEBP; 
+* Favicons generate for all platforms;
+* Creating icon-font from SVG;
+* JS and CSS minification; 
+* Layout standardization. 
+
+## Benefits
+* Works Offline;
+* Ability to Install the Web App;
+* Mobile Device Support.
 
 ## Install
 
 ```smartyconfig
-git clone https://github.com/1000tech/web-starter-kit.git MyApp
-cd MyApp
-npm i
-bower i
+$ Install Node.js
+$ npm -g i gulp && npm i -g bower
+$ git clone https://github.com/1000tech/web-starter-kit.git MyApp && cd MyApp
+$ npm i && bower i
+$ gulp
 ```
 ## Usage
 
@@ -31,12 +44,17 @@ gulp dev
 gulp dev --port 7000
 ```
 
-### Run selectors minify:
+### Selectors minify:
 ```smartyconfig
 gulp gs
 ```
 
-### Run favicons generate:
+### Generate icon font:
+```smartyconfig
+gulp iconfont
+```
+
+### Favicons generate:
 ```smartyconfig
 gulp favicons
 ```
@@ -48,7 +66,10 @@ gulp clean
 
 ## Tested on:
  
-**npm v5.0.2** and **node v7.10.0**
+**NPM v5.5.1** and **NodeJS v8.9.0 LTS**
 
 ## Demo
 Used on [MobiDevices](https://mobidevices.ru)
+
+## Developer
+Developed by [1000.tech](http://1000.tech) company. 
