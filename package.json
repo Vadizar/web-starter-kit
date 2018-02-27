@@ -1,13 +1,16 @@
 {
-  "name": "1000.tech_Web_Starter_Kit",
+  "name": "1000.tech_web_starter",
   "version": "2.5.0",
-  "description": "We've got the special power — we make future",
+  "description": "we make web",
   "author": "1000.tech <info@1000.tech>",
   "repository": {
     "type": "git",
     "url": "https://github.com/1000tech/web-starter-kit"
   },
   "license": "GPL-3.0+",
+  "scripts": {
+    "start": "node ./app"
+  },
   "dependencies": {
     "connect-livereload": "^0.6.0",
     "del": "^3.0.0",
@@ -34,10 +37,14 @@
     "gulp-uglify": "^3.0.0",
     "gulp-watch": "^5.0.0",
     "gulp-webp": "^3.0.0",
+    "helmet": "^3.11.0",
     "imagemin-jpeg-recompress": "^5.1.0",
     "imagemin-svgo": "^6.0.0",
     "nib": "^1.1.0",
+    "nodemon": "^1.15.1",
     "openurl": "^1.1.1",
-    "serve-static": "^1.13.1"
+    "serve-static": "^1.13.1",
+    "shrink-ray-current": "^2.1.0",
+    "spdy": "^3.4.7"
   }
 }

@@ -3,6 +3,7 @@ var
     $ = require('gulp-load-plugins')({
         pattern: '*'
     });
+    config = require('./config');
 
 // Compiling Pug in HTML
 gulp.task('views', function() {
@@ -271,31 +272,17 @@ gulp.task('clean', function() {
 
 // Web-server
 gulp.task('server', function() {
-    var port = process.argv[4] || 5000;
+    // var port = process.argv[4] || 5000;
     $.livereload.listen();
-    $.express()
+    $.nodemon({
+        script: 'app'
+    });
+    $.openurl.open('http://localhost:' + process.host)
 
-        // Livereload
-        .use($.connectLivereload({ port: 35729 }))
+});
 
-        // View dir
-        .use($.express.static(__dirname + '/public'))
-
-        // View engine setup
-        .set('view engine', 'pug')
-
-        // Handle 404
-        .get('*', function(req, res){
-            res.status(404);
-            res.render('404');
-        })
-
-        // Port
-        .listen(port, function (err) {
-            if (err) throw err;
-            console.log('Server start on ' + port + ' port.');
-            $.openurl.open('http://localhost:' + port);
-        });
+gulp.task('open', function() {
+    $.openurl.open('http://localhost:' + process.host)
 });
 
 // Watcher

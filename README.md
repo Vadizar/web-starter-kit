@@ -1,16 +1,19 @@
-# 1000.tech Web Starter Kit
+# 1000.tech Web Starter
 
-Starter Kit, which contains all the standard Front-end Developer tasks:
+This is Web Starter Kit, which contains all the standard Front-end Developer tasks:
 
 * Build styles and layout;
 * Image optimization, support WEBP; 
 * Favicons generate for all platforms;
 * Creating icon-font from SVG;
 * JS and CSS minification; 
+* CSS class obfuscation; 
 * Layout standardization. 
 
 ## Benefits
 * Works Offline;
+* Uses compression algorithms Brotli;
+* Supports HTTP/2;
 * Ability to Install the Web App;
 * Mobile Device Support.
 
@@ -63,13 +66,21 @@ gulp favicons
 ```smartyconfig
 gulp clean
 ```
+### Run server:
+```smartyconfig
+node app
+```
+or
+```smartyconfig
+npm start
+```
 
 ## Tested on:
  
-**NPM v5.5.1** and **NodeJS v8.9.0 LTS**
+**NPM v5.6.0** and **NodeJS v9.5.0**
 
 ## Demo
 Used on [MobiDevices](https://mobidevices.ru)
 
 ## Developer
-Developed by [1000.tech](http://1000.tech) company. 
+Developed by [1000.tech](https://1000.tech/en) company. 
