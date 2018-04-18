@@ -157,7 +157,6 @@ gulp.task('imagemin', function() {
 });
 
 // Optimizing images | Develop
-// Optimizing images | Develop
 gulp.task('imagemin-dev', function() {
     gulp.src('./img/**/*')
         .pipe($.newer('./public/img/'))
