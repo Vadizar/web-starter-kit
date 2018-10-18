@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/1000tech/web-starter-kit"
   },
-  "license": "GPL-3.0+",
+  "license": "MIT",
   "scripts": {
     "start": "node ./app"
   },
