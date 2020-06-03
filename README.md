@@ -88,8 +88,3 @@ npm start
  
 **NPM v5.6.0** and **NodeJS v9.5.0**
 
-## Demo
-Used on [MobiDevices](https://mobidevices.ru)
-
-## Developer
-Developed by [1000.tech](https://1000.tech/en) company. 

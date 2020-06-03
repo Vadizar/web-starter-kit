@@ -6,10 +6,13 @@
     "type": "git",
     "url": "https://github.com/1000tech/guitrap.git"
   },
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./app"
+  },
   "babel": {
     "presets": ["@babel/preset-env"]
   },
-  "license": "WTFPL",
   "dependencies": {
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
