@@ -1,143 +1,171 @@
-var
+const
     gulp = require('gulp'),
+    config = require('./config'),
     $ = require('gulp-load-plugins')({
         pattern: '*'
     });
-    config = require('./config');
 
 // Compiling Pug in HTML
 gulp.task('views', function() {
-    gulp.src('./views/*.pug')
-        .pipe($.newer('./public/'))
+    return gulp.src('./views/*.pug')
+        .pipe($.newer(CONFIG.path))
         .pipe($.pug())
-        .pipe(gulp.dest('./public/'))
+        .pipe(gulp.dest(CONFIG.path))
+        .pipe($.atomizer({
+            acssConfig: require('./acssConf.js')
+        }))
+        .pipe($.csso())
+        .pipe(gulp.dest(CONFIG.path + 'css/'))
         .pipe($.livereload())
 });
 
 // Compiling Pug in HTML | Develop
 gulp.task('views-dev', function() {
-    gulp.src('./views/*.pug')
-        .pipe($.newer('./public/'))
+    return gulp.src('./views/*.pug')
+        .pipe($.newer(CONFIG.path))
         .pipe(
             $.pug({
                 // pretty: true
             })
-            .on('error', $.notify.onError({
-                title  : "Pug Error",
-                message: "<%= error.message %>",
-                sound: "Blow"
-            }))
+                .on('error', $.notify.onError({
+                    title  : "Pug Error",
+                    message: "<%= error.message %>",
+                    sound: "Blow"
+                }))
         )
-        .pipe(gulp.dest('./public/'))
+        .pipe(gulp.dest(CONFIG.path))
+        .pipe($.atomizer({
+            acssConfig: require('./acssConf.js')
+        }))
+        .pipe(gulp.dest(CONFIG.path + 'css/'))
         .pipe($.livereload())
 });
 
 // Compiling Stylus in CSS
 gulp.task('css', function() {
-    gulp.src('./styl/*.styl')
-        .pipe($.newer('./public/css/'))
+    return gulp.src('./styl/*.styl')
+        .pipe($.newer(CONFIG.path + 'css/'))
         .pipe($.stylus({
             use: $.nib()
         }))
         .pipe($.groupCssMediaQueries())
         .pipe($.csso())
-        .pipe($.autoprefixer('last 2 versions'))
-        .pipe(gulp.dest('./public/css/'))
-        .pipe($.livereload())
+        .pipe($.autoprefixer('last 1 versions'))
+        .pipe(gulp.dest(CONFIG.path + 'css/'))
 });
 
 // Compiling Stylus in CSS | Develop
 gulp.task('css-dev', function() {
-    gulp.src('./styl/*.styl')
-        .pipe($.newer('./public/css/'))
+    return gulp.src('./styl/*.styl')
+        .pipe($.newer(CONFIG.path + 'css/'))
         .pipe($.sourcemaps.init())
         .pipe(
             $.stylus({
                 use: $.nib()
             })
-            .on('error', $.notify.onError({
-                title  : "Stylus Error",
-                message: "<%= error.message %>",
-                sound: "Blow"
-            }))
+                .on('error', $.notify.onError({
+                    title  : "Stylus Error",
+                    message: "<%= error.message %>",
+                    sound: "Blow"
+                }))
         )
         .pipe($.autoprefixer({
-            browsers: [
+            overrideBrowserslist: [
                 '> 5%',
-                'last 2 versions',
+                'last 1 versions',
                 'ie > 9'
             ]
         }))
         .pipe($.sourcemaps.write())
-        .pipe(gulp.dest('./public/css/'))
+        .pipe(gulp.dest(CONFIG.path + 'css/'))
+});
+
+gulp.task('css-concat', function() {
+    return gulp.src([
+        CONFIG.path + 'css/app.css',
+        CONFIG.path + 'css/atomic.css',
+        CONFIG.path + 'css/icons.css'
+    ])
+        .pipe($.concat('style.css'))
+        .pipe(gulp.dest(CONFIG.path + 'css/'))
         .pipe($.livereload())
 });
 
 // Minify selectors
 gulp.task('gs', function() {
     var ignores = {
-        classes: ['active', 'webp', 'i-*'],
+        classes: ['active', 'i-*'],
         ids: '*'
     };
-    gulp.src(['./public/**/*.css', './public/**/*.html'])
+    return gulp.src([CONFIG.path + '**/*.css', CONFIG.path + '**/*.html'])
         .pipe($.selectors.run({}, ignores))
-        .pipe(gulp.dest('./public/'))
+        .pipe(gulp.dest(CONFIG.path))
 });
 
 // Compiling JS
 gulp.task('js', function(){
-    gulp.src([
-        './js/main.js'
+    return gulp.src([
+        './js/detectOS.js',
+        './js/main.js',
+        './js/menu.js',
+        './js/ripple.js'
     ])
+        .pipe($.babel())
         .pipe($.concat('script.js'))
         .pipe($.uglify())
-        .pipe(gulp.dest('./public/js/'))
+        .pipe(gulp.dest(CONFIG.path + 'js/'))
         .pipe($.livereload())
 });
 
 // Compiling JS | Develop
 gulp.task('js-dev', function(){
-    gulp.src([
-        './js/main.js'
+    return gulp.src([
+        './js/detectOS.js',
+        './js/main.js',
+        './js/menu.js',
+        './js/ripple.js'
     ])
         .pipe($.sourcemaps.init())
+        .pipe($.babel())
         .pipe($.concat('script.js'))
         .pipe($.sourcemaps.write())
-        .pipe(gulp.dest('./public/js/'))
+        .pipe(gulp.dest(CONFIG.path + 'js/'))
         .pipe($.livereload())
 });
 
 // Replace App JS
 gulp.task('js-app', function(){
-    gulp.src('./js/app/**/*')
+    return gulp.src('./js/app/**/*')
+        .pipe($.babel())
         .pipe($.uglify())
-        .pipe(gulp.dest('./public/'))
+        .pipe(gulp.dest(CONFIG.path))
         .pipe($.livereload())
 });
 
 // Replace inline JS
 gulp.task('js-inline', function(){
-    gulp.src('./js/inline/**/*')
-        .pipe($.newer('./public/js/'))
+    return gulp.src('./js/inline/**/*')
+        .pipe($.newer(CONFIG.path + 'js/'))
+        .pipe($.babel())
         .pipe($.uglify())
-        .pipe(gulp.dest('./public/js/'))
+        .pipe(gulp.dest(CONFIG.path))
         .pipe($.livereload())
 });
 
 // Replace inline JS | Develop
 gulp.task('js-inline-dev', function(){
-    gulp.src('./js/inline/**/*')
-        .pipe($.newer('./public/js/'))
+    return gulp.src('./js/inline/**/*')
+        .pipe($.newer(CONFIG.path + 'js/'))
         .pipe($.sourcemaps.init())
+        .pipe($.babel())
         .pipe($.sourcemaps.write())
-        .pipe(gulp.dest('./public/js/'))
+        .pipe(gulp.dest(CONFIG.path))
         .pipe($.livereload())
 });
 
 // Optimizing images
-gulp.task('imagemin', function() {
-    gulp.src('./img/**/*')
-        .pipe($.newer('./public/img/'))
+gulp.task('img', function() {
+    return gulp.src('./img/**/*')
         .pipe($.imagemin([
             $.imageminJpegRecompress({
                 method: 'smallfry'
@@ -152,28 +180,21 @@ gulp.task('imagemin', function() {
                 ]
             })
         ]))
-        .pipe(gulp.dest('./public/img/'))
+        .pipe(gulp.dest(CONFIG.path + 'img/'))
         .pipe($.livereload())
 });
 
 // Optimizing images | Develop
-gulp.task('imagemin-dev', function() {
-    gulp.src('./img/**/*')
-        .pipe($.newer('./public/img/'))
+gulp.task('img-dev', function() {
+    return gulp.src('./img/**/*')
+        .pipe($.newer(CONFIG.path + 'img/'))
         .pipe($.imagemin())
-        .pipe(gulp.dest('./public/img/'))
+        .pipe(gulp.dest(CONFIG.path + 'img/'))
         .pipe($.livereload())
 });
 
-// Generate Webp
-gulp.task('webp', function() {
-    gulp.src('./img/**/*')
-        .pipe($.webp())
-        .pipe(gulp.dest('./public/img/'))
-});
-
 // Generate favicons
-gulp.task('favicons', function () {
+gulp.task('favicons', function(done) {
     $.realFavicon.generateFavicon({
         masterPicture: './img/favicons/favicon.png',
         design: {
@@ -182,14 +203,14 @@ gulp.task('favicons', function () {
                 onConflict: 'override',
                 pictureAspect: 'backgroundAndMargin',
                 backgroundColor: '#fff',
-                margin: '15%',
+                margin: '30%',
                 manifest: {}
             },
             ios: {
                 onConflict: 'override',
                 pictureAspect: 'backgroundAndMargin',
                 backgroundColor: '#fff',
-                margin: '15%'
+                margin: '30%'
             },
             safariPinnedTab: {
                 onConflict: 'override',
@@ -217,6 +238,8 @@ gulp.task('favicons', function () {
         },
         markupFile: 'public/img/favicons/package.json',
         dest: './public/img/favicons/'
+    }, function() {
+        done();
     });
 });
 
@@ -225,12 +248,13 @@ gulp.task('iconfont', function() {
     var
         fontName = 'icon-font',
         cssClass = 'i';
-    gulp.src(['./fonts/icon-font/**/*.svg'])
+    return gulp.src(['./fonts/icon-font/**/*.svg'])
         .pipe($.iconfontCss({
             fontName: fontName,
             cssClass: cssClass,
             path: './styl/mixins/icon-font.styl',
-            targetPath: '../../styl/components/font/icon-font.styl',
+            // targetPath: '../../styl/components/font/icon-font.styl',
+            targetPath: '../css/icons.css',
             fontPath: '../fonts/'
         }))
         .pipe($.iconfont({
@@ -239,39 +263,39 @@ gulp.task('iconfont', function() {
             normalize: true,
             formats: ['ttf','woff','woff2']
         }))
-        .pipe(gulp.dest('./public/fonts/'))
+        .pipe(gulp.dest(CONFIG.path + 'fonts/'))
         .pipe($.livereload())
 });
 
 // Replace fonts
 gulp.task('fonts', function() {
-    gulp.src('./fonts/text-font/*')
-        .pipe($.newer('./public/fonts/'))
-        .pipe(gulp.dest('./public/fonts/'))
+    return gulp.src('./fonts/text-font/*')
+        .pipe($.newer(CONFIG.path + 'fonts/'))
+        .pipe(gulp.dest(CONFIG.path + 'fonts/'))
         .pipe($.livereload())
 });
 
 // Replace manifest.json
 gulp.task('manifest', function() {
-    gulp.src('./manifest/*')
-        .pipe(gulp.dest('./public/'))
+    return gulp.src('./manifest/*')
+        .pipe($.newer(CONFIG.path))
+        .pipe(gulp.dest(CONFIG.path))
 });
 
 // Replace seo rule
 gulp.task('seo', function() {
-    gulp.src('./seo/*')
-        .pipe($.newer('./public/'))
-        .pipe(gulp.dest('./public/'))
+    return gulp.src('./seo/*')
+        .pipe($.newer(CONFIG.path))
+        .pipe(gulp.dest(CONFIG.path))
 });
 
 // Task for clean public
 gulp.task('clean', function() {
-    $.del('./public/')
+    return $.del(CONFIG.path)
 });
 
 // Web-server
 gulp.task('server', function() {
-    // var port = process.argv[4] || 5000;
     $.livereload.listen();
     $.nodemon({
         script: 'app'
@@ -286,40 +310,23 @@ gulp.task('open', function() {
 
 // Watcher
 gulp.task('watch', function() {
-    $.watch('./views/**/*', function() { gulp.start('views') });
-    $.watch('./styl/**/*', function() { gulp.start('css') });
-    $.watch('./js/**/*', function() { gulp.start(['js', 'js-inline']) });
-    $.watch('./img/**/*', function() { gulp.start(['imagemin', 'webp']) });
-    $.watch('./img/favicons/**/*', function() { gulp.start('favicons') });
-    $.watch('./fonts/**/*', function() { gulp.start(['iconfont', 'fonts']) });
-    $.watch('./seo/**/*', function() { gulp.start('seo') });
-});
-
-// Watcher | Develop
-gulp.task('watch-dev', function() {
-    $.watch('./views/**/*', function() { gulp.start('views-dev') });
-    $.watch('./styl/**/*', function() { gulp.start('css-dev') });
-    $.watch('./js/**/*', function() { gulp.start(['js-dev', 'js-inline-dev']) });
-    $.watch('./img/**/*', function() { gulp.start(['imagemin-dev', 'webp']) });
-    $.watch('./img/favicons/**/*', function() { gulp.start('favicons') });
-    $.watch('./fonts/**/*', function() { gulp.start(['iconfont', 'fonts']) });
-    $.watch('./seo/**/*', function() { gulp.start('seo') });
+    gulp.watch('./views/**/*', gulp.series('views-dev'));
+    gulp.watch('./styl/**/*', gulp.series('css-dev','css-concat'));
+    gulp.watch('./fonts/**/*', gulp.series('iconfont','fonts','css-dev','css-concat'));
+    gulp.watch('./js/**/*', gulp.parallel('js-dev','js-inline-dev'));
+    gulp.watch('./img/favicons/**/*', gulp.parallel('favicons'));
+    gulp.watch('./img/**/*', gulp.parallel('img-dev'));
+    gulp.watch('./manifest/*', gulp.parallel('manifest'));
 });
 
 // Compiling
-gulp.task('default', function(cb) {
-    return $.sequence(
-        ['css','js','js-inline',
-        'imagemin','webp','favicons','iconfont','fonts'],'views',
-        ['server','watch','manifest','seo'],
-        cb);
-});
+gulp.task('default', gulp.series(
+    gulp.series('views','iconfont','fonts','css','css-concat'),
+    gulp.parallel('js','js-inline','img','favicons','server','manifest','seo')
+));
 
 // Compiling | Develop
-gulp.task('dev', function(cb) {
-    return $.sequence(
-        ['css-dev','js-dev','js-inline-dev',
-        'imagemin-dev','webp','favicons','iconfont','fonts'],'views-dev',
-        ['server','watch-dev'],
-        cb);
-});
+gulp.task('dev', gulp.series(
+    gulp.series('views-dev','iconfont','fonts','css-dev','css-concat'),
+    gulp.parallel('js-dev','js-inline-dev','img-dev','favicons','server','manifest','watch')
+));

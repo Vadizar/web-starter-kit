@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc= "http://purl.org/dc/elements/1.1/">
+
+    <rdf:Description rdf:about="https://mobidevices.ru">
+        <dc:title>MobiDevices</dc:title>
+        <dc:creator>Вадим Зарецкий</dc:creator>
+        <dc:subject>гаджеты, технологии, интернет</dc:subject>
+        <dc:description>Журнал о гаджетах и технологиях. Аналитика и авторское мнение. Серьёзно и без рекламы.</dc:description>
+        <dc:publisher>MobiDevices</dc:publisher>
+        <dc:contributor>Вадим Зарецкий</dc:contributor>
+        <dc:date>2010-10-28</dc:date>
+        <dc:format>text/html, application, audio, image, text, video</dc:format>
+        <dc:identifier>https://mobidevices.ru</dc:identifier>
+        <dc:source>https://mobidevices.ru</dc:source>
+        <dc:language>ru-RU</dc:language>
+        <dc:coverage>World</dc:coverage>
+    </rdf:Description>
+
+</rdf:RDF>

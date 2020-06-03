@@ -7,6 +7,7 @@ head
    meta(name='author' content=page.author)
 
    //- Facebook markup
+   meta(property='fb:pages' content=page.fb)
    meta(property='og:type' content=page.type)
    meta(property='og:title' content=page.title)
    meta(property='og:description' content=page.desc)
@@ -27,7 +28,7 @@ head
    meta(name='theme-color' content='#fff')
 
    //- App color in iOS
-   meta(name='apple-mobile-web-app-status-bar-style' content='default')
+   meta(name='apple-mobile-web-app-status-bar-style' content='black-translucent')
 
    //- App name in iOS
    meta(name="apple-mobile-web-app-title" content=page.appTitle)
@@ -40,6 +41,12 @@ head
 
    //- Manifest.json for Chrome
    link(rel='manifest' href='/manifest.json')
+
+   //- Dublin Core
+   link(rel='meta' type='application/rdf+xml' title='Dublin' href='/dublin.rdf')
+
+   //- RSS-Feed
+   link(rel='alternate' type='application/rss+xml' title=page.rssTitle href='/feed')
 
    //- Favicons
    link(rel='shortcut icon' href='/img/favicons/favicon.ico' type='image/x-icon')

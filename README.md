@@ -1,4 +1,4 @@
-# 1000.tech Web Starter
+# 1000.tech Web Starter Pack
 
 This is Web Starter Kit, which contains all the standard Front-end Developer tasks:
 
@@ -17,13 +17,22 @@ This is Web Starter Kit, which contains all the standard Front-end Developer tas
 * Ability to Install the Web App;
 * Mobile Device Support.
 
-## Install
+## On MacOS
+* Install [Xcode](https://developer.apple.com/xcode/download/)
+* Install Node.js
+* Install ``npm -g i gulp && npm i -g bower``
+
+## On Windows
+* Install Node.js
+* Install all the required tools and configurations using Microsoft's windows-build-tools using ``npm install --global --production windows-build-tools`` from an elevated PowerShell or CMD.exe (run as Administrator).
+* Install ``npm install -g gulp && npm install -g bower``
+* Install ``npm install -g node-gyp``
+
+## Install 1000.tech Web Starter
 
 ```smartyconfig
-$ Install Node.js
-$ npm -g i gulp && npm i -g bower
 $ git clone https://github.com/1000tech/web-starter-kit.git MyApp && cd MyApp
-$ npm i && bower i
+$ npm i
 $ gulp
 ```
 ## Usage

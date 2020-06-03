@@ -6,6 +6,7 @@ var
     app = express(),
     helmet = require('helmet'),
     shrinkRay = require('shrink-ray-current'),
+    connect = require('connect-livereload'),
     config = require('./config');
 
 /**
@@ -17,6 +18,13 @@ app.use(shrinkRay());
  * Secure Express
  */
 app.use(helmet());
+
+/**
+ * Livereload if develop
+ */
+if (process.develop) {
+    app.use(connect({ port: 35729 }));
+}
 
 /**
  * View dir
@@ -35,13 +43,6 @@ app.get('*', function(req, res){
     res.status(404);
     res.render('404');
 });
-
-/**
- * Livereload if develop
- */
-// if (process.develop) {
-app.use(require('connect-livereload')({ port: 35729 }));
-// }
 
 /**
  * Create HTTPS server and Listen on provided port
