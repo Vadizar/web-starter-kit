@@ -301,11 +301,6 @@ gulp.task('server', function() {
         script: 'app'
     });
     $.openurl.open('http://localhost:' + process.host)
-
-});
-
-gulp.task('open', function() {
-    $.openurl.open('http://localhost:' + process.host)
 });
 
 // Watcher
@@ -322,11 +317,11 @@ gulp.task('watch', function() {
 // Compiling
 gulp.task('default', gulp.series(
     gulp.series('views','iconfont','fonts','css','css-concat'),
-    gulp.parallel('js','js-inline','img','favicons','server','manifest','seo')
+    gulp.parallel('js','js-inline','img','favicons','manifest','server','seo')
 ));
 
 // Compiling | Develop
 gulp.task('dev', gulp.series(
     gulp.series('views-dev','iconfont','fonts','css-dev','css-concat'),
-    gulp.parallel('js-dev','js-inline-dev','img-dev','favicons','server','manifest','watch')
+    gulp.parallel('js-dev','js-inline-dev','img-dev','favicons','manifest','server','watch')
 ));
